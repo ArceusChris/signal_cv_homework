@@ -1,0 +1,415 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage{multicol}
+\geometry{left=0.5cm,right=0.5cm,top=0.5cm,bottom=0.5cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnseprule}{0.2pt}
+\begin{document}
+\begin{multicols}{3}
+\textbf{一、傅里叶级数}
+\scriptsize
+
+\textbf{连续周期信号：}$f(t) = f(t+T)$，$\omega_0 = \frac{2\pi}{T}$
+
+\textbf{三角形式：}$f(t) = a_0 + \sum_{n=1}^{\infty}[a_n\cos(n\omega_0 t) + b_n\sin(n\omega_0 t)]$
+
+\textbf{指数形式：}$f(t) = \sum_{n=-\infty}^{\infty}c_n e^{jn\omega_0 t}$，其中
+$$c_n = \frac{1}{T}\int_T f(t)e^{-jn\omega_0 t}dt$$
+
+\textbf{关系：}$c_0 = a_0$，$c_n = \frac{a_n-jb_n}{2}$，$c_{-n} = c_n^*$（$f(t)$实）
+\begin{itemize}
+\itemsep=0pt
+\item 线性：$af(t)+bg(t) \leftrightarrow ac_n+bd_n$
+\item 时移：$f(t-t_0) \leftrightarrow c_n e^{-jn\omega_0 t_0}$
+\item 共轭对称：$f(t)$实 $\Rightarrow c_{-n}=c_n^*$
+\item 帕塞瓦尔：$\frac{1}{T}\int_T|f(t)|^2dt = \sum_{n=-\infty}^{\infty}|c_n|^2$
+\end{itemize}
+
+
+\noindent\textbf{二、傅里叶变换}
+\scriptsize
+\begin{align*}
+F(\omega) &= \mathcal{F}[f(t)] = \int_{-\infty}^{\infty} f(t)e^{-j\omega t}dt \\
+f(t) &= \mathcal{F}^{-1}[F(\omega)] = \frac{1}{2\pi}\int_{-\infty}^{\infty} F(\omega)e^{j\omega t}d\omega
+\end{align*}
+\scriptsize
+\begin{enumerate}
+\itemsep=0pt
+\item \textbf{线性性：} $\mathcal{F}[af(t)+bg(t)] = aF(\omega)+bG(\omega)$
+\item \textbf{时移性：} $\mathcal{F}[f(t-t_0)] = F(\omega)e^{-j\omega t_0}$
+\item \textbf{频移性：} $\mathcal{F}[f(t)e^{j\omega_0 t}] = F(\omega-\omega_0)$
+\item \textbf{尺度变换：} $\mathcal{F}[f(at)] = \frac{1}{|a|}F(\frac{\omega}{a})$
+\item \textbf{对称性（对偶性）：} $\mathcal{F}[F(t)] = 2\pi f(-\omega)$
+\item \textbf{时域微分：} $\mathcal{F}[\frac{d^n f(t)}{dt^n}] = (j\omega)^n F(\omega)$
+\textbf{条件:}$f(-\infty)+f(\infty)=0$
+\item \textbf{频域微分：} $\mathcal{F}[t^n f(t)] = j^n \frac{d^n F(\omega)}{d\omega^n}$
+\item \textbf{积分性：} $\mathcal{F}[\int_{-\infty}^{t}f(\tau)d\tau] = \frac{F(\omega)}{j\omega} + \pi F(0)\delta(\omega)$
+\item \textbf{时域卷积：} $\mathcal{F}[f(t)*g(t)] = F(\omega)G(\omega)$
+\item \textbf{频域卷积：} $\mathcal{F}[f(t)g(t)] = \frac{1}{2\pi}F(\omega)*G(\omega)$
+\item \textbf{帕塞瓦尔定理：} $\int_{-\infty}^{\infty}|f(t)|^2dt = \frac{1}{2\pi}\int_{-\infty}^{\infty}|F(\omega)|^2d\omega$
+\item \textbf{能量与功率：}
+   \begin{itemize}
+   \itemsep=0pt
+   \item 能量信号：$E = \int_{-\infty}^{\infty}|f(t)|^2dt = \frac{1}{2\pi}\int_{-\infty}^{\infty}|F(\omega)|^2d\omega$
+   \item 功率信号（周期）：$P = \frac{1}{T}\int_T|f(t)|^2dt = \sum_{n=-\infty}^{\infty}|a_n|^2$ （$a_n$为傅里叶系数）
+   \item 平均功率：$P = \lim_{T\to\infty}\frac{1}{T}\int_{-T/2}^{T/2}|f(t)|^2dt$
+   \end{itemize}
+\item \textbf{共轭对称性：}若$f(t)$实，则$F(-\omega) = F^*(\omega)$
+\item \textbf{奇偶虚实性：}
+   \begin{itemize}
+   \itemsep=0pt
+   \item $f(t)$实偶 $\Rightarrow$ $F(\omega)$实偶
+   \item $f(t)$实奇 $\Rightarrow$ $F(\omega)$纯虚奇
+   \item $f(t)$虚偶 $\Rightarrow$ $F(\omega)$虚偶
+   \item $f(t)$虚奇 $\Rightarrow$ $F(\omega)$实奇
+   \end{itemize}
+\item \textbf{奇偶分解：}
+   \begin{itemize}
+   \itemsep=0pt
+   \item 偶部：$f_e(t) = \frac{f(t)+f(-t)}{2}$ $\Leftrightarrow$ $F_e(\omega) = \text{Re}\{F(\omega)\}$
+   \item 奇部：$f_o(t) = \frac{f(t)-f(-t)}{2}$ $\Leftrightarrow$ $F_o(\omega) = j\text{Im}\{F(\omega)\}$
+   \item 关系：$f(t) = f_e(t) + f_o(t)$，$F(\omega) = F_e(\omega) + F_o(\omega)$
+   \end{itemize}
+\end{enumerate}
+
+\noindent\textbf{三、常见傅里叶变换对}
+\scriptsize
+\begin{align*}
+&\delta(t) \longleftrightarrow 1 \\
+&1 \longleftrightarrow 2\pi\delta(\omega) \\
+&e^{j\omega_0 t} \longleftrightarrow 2\pi\delta(\omega-\omega_0) \\
+&\cos(\omega_0 t) \longleftrightarrow \pi[\delta(\omega-\omega_0)+\delta(\omega+\omega_0)] \\
+&\sin(\omega_0 t) \longleftrightarrow j\pi[\delta(\omega+\omega_0)-\delta(\omega-\omega_0)] \\
+&e^{-at}u(t) \longleftrightarrow \frac{1}{a+j\omega}, \quad (a>0) \\
+&u(t) \longleftrightarrow \pi\delta(\omega) + \frac{1}{j\omega} \\
+\end{align*}
+\begin{align*}
+&\text{rect}(\frac{t}{\tau}) \longleftrightarrow \frac{\tau\sin(\omega\tau/2)}{\omega\tau/2} \\
+&\text{sinc}(t) = \frac{\sin(\pi t)}{\pi t} \longleftrightarrow \text{rect}(\frac{\omega}{2\pi}) \\
+&\text{tri}(\frac{t}{\tau}) \longleftrightarrow \frac{\tau\sin^2(\omega\tau/2)}{(\omega\tau/2)^2} \\
+&\sum_{n=-\infty}^{\infty}\delta(t-nT) \longleftrightarrow \frac{2\pi}{T}\sum_{k=-\infty}^{\infty}\delta(\omega-k\omega_0)
+\end{align*}
+\textbf{周期信号的傅里叶变换：}
+
+\textbf{方法一（利用傅里叶级数）：}
+
+若$f(t) = \sum_{n=-\infty}^{\infty}c_n e^{jn\omega_0 t}$，则
+$$F(\omega) = 2\pi\sum_{n=-\infty}^{\infty}c_n\delta(\omega-n\omega_0)$$
+
+\textbf{方法二（单周期信号法）：}
+
+$$f(t) = \sum_{k=-\infty}^{\infty}f_0(t-kT)$$
+
+$$F(\omega) = F_0(\omega)\sum_{k=-\infty}^{\infty}e^{-jk\omega T}=$$
+$$\frac{2\pi}{T}F_0(\omega)\sum_{n=-\infty}^{\infty}\delta(\omega-n\omega_0)$$
+
+其中$c_n = \frac{1}{T}F_0(n\omega_0)$
+
+\noindent\textbf{四、离散时间傅里叶变换(DTFT)}
+\scriptsize
+\begin{align*}
+X(e^{j\omega}) &= \sum_{n=-\infty}^{\infty}x[n]e^{-j\omega n} \\
+x[n] &= \frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\omega})e^{j\omega n}d\omega
+\end{align*}
+\begin{itemize}
+\itemsep=0pt
+\item 线性：$\mathcal{F}_d[ax[n]+by[n]] = aX(e^{j\omega})+bY(e^{j\omega})$
+\item 时移：$\mathcal{F}_d[x[n-n_0]] = e^{-j\omega n_0}X(e^{j\omega})$
+\item 频移：$\mathcal{F}_d[e^{j\omega_0 n}x[n]] = X(e^{j(\omega-\omega_0)})$
+\item 周期性：$X(e^{j(\omega+2\pi)}) = X(e^{j\omega})$
+\item 共轭对称：若$x[n]$实，则$X(e^{-j\omega}) = X^*(e^{j\omega})$
+\item 频域微分：$\mathcal{F}_d[nx[n]] = j\frac{dX(e^{j\omega})}{d\omega}$
+\item 时域扩展：$x_k[n] = \begin{cases} x[n/k], & n=0,\pm k,\pm 2k,\ldots \\ 0, & \text{其他} \end{cases}$，则$X_k(e^{j\omega}) = X(e^{jk\omega})$
+\item 卷积：$\mathcal{F}_d[x[n]*y[n]] = X(e^{j\omega})Y(e^{j\omega})$
+\item 调制：$\mathcal{F}_d[x[n]y[n]] = \frac{1}{2\pi}X(e^{j\omega})*Y(e^{j\omega})$
+\item 奇偶虚实性：
+   \begin{itemize}
+   \itemsep=0pt
+   \item $x[n]$实偶 $\Rightarrow$ $X(e^{j\omega})$实偶
+   \item $x[n]$实奇 $\Rightarrow$ $X(e^{j\omega})$纯虚奇
+   \item $x[n]$虚偶 $\Rightarrow$ $X(e^{j\omega})$虚偶
+   \item $x[n]$虚奇 $\Rightarrow$ $X(e^{j\omega})$实奇
+   \end{itemize}
+\item 低频和高频：低频指$\omega\approx 2k\pi$，高频指$\omega\approx (2k+1)\pi$
+\end{itemize}
+
+\begin{align*}
+&\delta[n] \longleftrightarrow 1 \\
+&\delta[n-n_0] \longleftrightarrow e^{-j\omega n_0} \\
+&a^n u[n] \longleftrightarrow \frac{1}{1-ae^{-j\omega}}, \quad |a|<1 \\
+&u[n] \longleftrightarrow \frac{1}{1-e^{-j\omega}} + \pi\sum_{k=-\infty}^{\infty}\delta(\omega-2\pi k) \\
+&\text{rect}_N[n] \longleftrightarrow \frac{\sin(\omega N/2)}{\sin(\omega/2)}e^{-j\omega(N-1)/2}
+\end{align*}
+
+\noindent\textbf{五、拉普拉斯变换（双边）}
+\scriptsize
+\textbf{定义：}$F(s) = \mathcal{L}[f(t)] = \int_{-\infty}^{\infty}f(t)e^{-st}dt, \quad s=\sigma+j\omega$
+\begin{itemize}
+\itemsep=0pt
+\item 线性：$\mathcal{L}[af(t)+bg(t)] = aF(s)+bG(s)$，ROC至少为$R_1\cap R_2$
+\item 时移：$\mathcal{L}[f(t-t_0)] = e^{-st_0}F(s)$，ROC不变
+\item 频移：$\mathcal{L}[e^{-at}f(t)] = F(s+a)$，ROC：$\text{Re}(s+a)\in R$
+\item 尺度：$\mathcal{L}[f(at)] = \frac{1}{|a|}F(\frac{s}{a})$，ROC：$\frac{s}{a}\in R$
+\item 时域微分：$\mathcal{L}[f'(t)] = sF(s)$，ROC至少为$R$
+\item s域微分：$\mathcal{L}[tf(t)] = -\frac{dF(s)}{ds}$，ROC：$R$
+\item 积分：$\mathcal{L}[\int_{-\infty}^{t} f(\tau)d\tau] = \frac{F(s)}{s}$，ROC至少为$R\cap\{\text{Re}(s)>0\}$
+\item 卷积：$\mathcal{L}[f(t)*g(t)] = F(s)G(s)$，ROC至少为$R_1\cap R_2$
+\item 初值定理：$f(0^+) = \lim_{s\to\infty}sF(s)$ （因果信号）
+\item 终值定理：$\lim_{t\to\infty}f(t) = \lim_{s\to0}sF(s)$ （极点在左半平面或原点）
+\end{itemize}
+\begin{align*}
+&\delta(t) \longleftrightarrow 1, \quad \text{全}s\text{平面} \\
+&u(t) \longleftrightarrow \frac{1}{s}, \quad \text{Re}(s)>0 \\
+&-u(-t) \longleftrightarrow \frac{1}{s}, \quad \text{Re}(s)<0 \\
+&e^{-at}u(t) \longleftrightarrow \frac{1}{s+a}, \quad \text{Re}(s)>-a \quad \text{（右边）} \\
+&-e^{-at}u(-t) \longleftrightarrow \frac{1}{s+a}, \quad \text{Re}(s)<-a \quad \text{（左边）} \\
+&te^{-at}u(t) \longleftrightarrow \frac{1}{(s+a)^2}, \quad \text{Re}(s)>-a \\
+&-te^{-at}u(-t) \longleftrightarrow \frac{1}{(s+a)^2}, \quad \text{Re}(s)<-a \\
+&e^{-a|t|} \longleftrightarrow \frac{2a}{s^2-a^2}, \quad -a<\text{Re}(s)<a \\
+&t^n u(t) \longleftrightarrow \frac{n!}{s^{n+1}}, \quad \text{Re}(s)>0 \\
+&\cos(\omega_0 t)u(t) \longleftrightarrow \frac{s}{s^2+\omega_0^2}, \quad \text{Re}(s)>0 \\
+&\sin(\omega_0 t)u(t) \longleftrightarrow \frac{\omega_0}{s^2+\omega_0^2}, \quad \text{Re}(s)>0 \\
+&e^{-at}\cos(\omega_0 t)u(t) \longleftrightarrow \frac{s+a}{(s+a)^2+\omega_0^2}, \quad \text{Re}(s)>-a \\
+&e^{-at}\sin(\omega_0 t)u(t) \longleftrightarrow \frac{\omega_0}{(s+a)^2+\omega_0^2}, \quad \text{Re}(s)>-a
+\end{align*}
+
+\noindent\textbf{六、z变换}
+\scriptsize
+\textbf{定义：}$X(z) = \mathcal{Z}[x[n]] = \sum_{n=-\infty}^{\infty}x[n]z^{-n}$
+\begin{itemize}
+\itemsep=0pt
+\item 线性：$\mathcal{Z}[ax[n]+by[n]] = aX(z)+bY(z)$，ROC至少为$R_1\cap R_2$
+\item 时移：$\mathcal{Z}[x[n-n_0]] = z^{-n_0}X(z)$，ROC：$R$（可能除去$z=0$或$z=\infty$）
+\item 尺度：$\mathcal{Z}[a^n x[n]] = X(\frac{z}{a})$，ROC：$|z/a|\in R$即$|z|\in|a|R$
+\item z域微分：$\mathcal{Z}[nx[n]] = -z\frac{dX(z)}{dz}$，ROC：$R$
+\item 时域卷积：$\mathcal{Z}[x[n]*y[n]] = X(z)Y(z)$，ROC至少为$R_1\cap R_2$
+\item 差分：$\mathcal{Z}[x[n]-x[n-1]] = (1-z^{-1})X(z)$，ROC至少为$R\cap\{z\neq0\}$
+\item 累加：$\mathcal{Z}[\sum_{k=-\infty}^{n}x[k]] = \frac{X(z)}{1-z^{-1}}$，ROC至少为$R\cap\{|z|>1\}$
+\item 初值定理：$x[0] = \lim_{z\to\infty}X(z)$ （因果序列）
+\item 终值定理：$\lim_{n\to\infty}x[n] = \lim_{z\to1}(z-1)X(z)$ （极点在单位圆内或$z=1$）
+\end{itemize}
+\begin{align*}
+&\delta[n] \longleftrightarrow 1, \quad \text{全}z\text{平面} \\
+&u[n] \longleftrightarrow \frac{z}{z-1}, \, |z|>1 \\
+&-u[-n-1] \longleftrightarrow \frac{z}{z-1}, \, |z|<1 \\
+&a^n u[n] \longleftrightarrow \frac{z}{z-a}, \, |z|>|a| \quad \text{（右边）} \\
+&-a^n u[-n-1] \longleftrightarrow \frac{z}{z-a}, \, |z|<|a| \quad \text{（左边）} \\
+&na^n u[n] \longleftrightarrow \frac{az}{(z-a)^2}, \, |z|>|a| \\
+&-na^n u[-n-1] \longleftrightarrow \frac{az}{(z-a)^2}, \, |z|<|a| \\
+&\cos(\omega_0 n)u[n] \longleftrightarrow \frac{z(z-\cos\omega_0)}{z^2-2z\cos\omega_0+1} \\
+&\sin(\omega_0 n)u[n] \longleftrightarrow \frac{z\sin\omega_0}{z^2-2z\cos\omega_0+1}
+\end{align*}
+
+\end{multicols}
+
+\newpage
+
+\begin{multicols}{3}
+
+\noindent\textbf{七、连续时间LTI系统分析}
+\scriptsize
+
+\textbf{系统函数：}$H(s) = \frac{Y(s)}{X(s)} = \mathcal{L}[h(t)]$
+
+\textbf{稳定性判据：}
+\begin{itemize}
+\itemsep=0pt
+\item \textbf{BIBO稳定}：所有极点在左半平面，即$\text{Re}(p_j)<0$
+\item \textbf{临界稳定}：极点在虚轴上
+\item \textbf{不稳定}：至少一个极点在右半平面
+\end{itemize}
+
+\textbf{频率响应：}$H(j\omega) = H(s)|_{s=j\omega}$
+\begin{itemize}
+\itemsep=0pt
+\item 幅频特性：$|H(j\omega)|$
+\item 相频特性：$\angle H(j\omega)$
+\end{itemize}
+
+\textbf{时频特性：}
+
+\textbf{无失真传输条件：}$y(t) = Kx(t-t_d)$
+\begin{itemize}
+\itemsep=0pt
+\item 幅频：$|H(j\omega)| = K$（常数）
+\item 相频：$\angle H(j\omega) = -\omega t_d$（线性相位）
+\item 理想：$H(j\omega) = Ke^{-j\omega t_d}$
+\end{itemize}
+
+\textbf{群时延：}$\tau_g(\omega) = -\frac{d\theta(\omega)}{d\omega}$
+
+其中$\theta(\omega) = \angle H(j\omega)$
+
+物理意义：窄带信号包络的时延
+
+\textbf{相时延：}$\tau_p(\omega) = -\frac{\theta(\omega)}{\omega}$
+
+物理意义：载波的时延
+
+\textbf{关系：}
+\begin{itemize}
+\itemsep=0pt
+\item 线性相位：$\theta(\omega)=-\omega t_d$，则$\tau_g=\tau_p=t_d$
+\item 非线性相位：$\tau_g \neq \tau_p$，产生失真
+\end{itemize}
+
+\textbf{部分分式展开：}
+
+对于$H(s) = \frac{N(s)}{D(s)}$，若极点$p_i$为单极点：
+$$H(s) = \sum_{i}\frac{r_i}{s-p_i} \quad \text{其中} \quad r_i = [(s-p_i)H(s)]_{s=p_i}$$
+
+\noindent\textbf{八、离散时间LTI系统分析}
+\scriptsize
+
+\textbf{系统函数：}$H(z) = \frac{Y(z)}{X(z)} = \mathcal{Z}[h[n]]$
+
+\textbf{稳定性判据：}
+\begin{itemize}
+\itemsep=0pt
+\item \textbf{BIBO稳定}：所有极点在单位圆内，即$|p_j|<1$
+\item \textbf{临界稳定}：极点在单位圆上
+\item \textbf{不稳定}：至少一个极点在单位圆外
+\end{itemize}
+
+\textbf{频率响应：}$H(e^{j\omega}) = H(z)|_{z=e^{j\omega}}$
+
+\textbf{差分方程与系统函数关系：}
+
+差分方程：$\sum_{k=0}^{N}a_k y[n-k] = \sum_{k=0}^{M}b_k x[n-k]$
+
+系统函数：$H(z) = \frac{Y(z)}{X(z)} = \frac{\sum_{k=0}^{M}b_k z^{-k}}{\sum_{k=0}^{N}a_k z^{-k}}$
+
+\noindent\textbf{九、因果性与稳定性}
+\scriptsize
+
+\textbf{连续系统（s域）：}
+\begin{itemize}
+\itemsep=0pt
+\item \textbf{因果性}：$H(s)$是真有理函数（分子次数$\leq$分母次数）
+\item \textbf{稳定性}：收敛域包含虚轴，所有极点$\text{Re}(p)<0$
+\item \textbf{因果稳定}：收敛域为$\text{Re}(s)>\sigma_0$且$\sigma_0<0$
+\end{itemize}
+
+\textbf{离散系统（z域）：}
+\begin{itemize}
+\itemsep=0pt
+\item \textbf{因果性}：$H(z)$收敛域为$|z|>r$（某个圆外）
+\item \textbf{稳定性}：收敛域包含单位圆$|z|=1$，所有极点$|p|<1$
+\item \textbf{因果稳定}：收敛域为$|z|>r$且$r<1$
+\end{itemize}
+
+\noindent\textbf{十、系统连接}
+\scriptsize
+
+\textbf{串联：}$H(s) = H_1(s)H_2(s)$ \quad 或 \quad $H(z) = H_1(z)H_2(z)$
+
+\textbf{并联：}$H(s) = H_1(s)+H_2(s)$ \quad 或 \quad $H(z) = H_1(z)+H_2(z)$
+
+\textbf{反馈：}$H(s) = \frac{H_1(s)}{1\pm H_1(s)H_2(s)}$ \quad （$+$负反馈，$-$正反馈）
+
+\noindent\textbf{十一、拉普拉斯与z变换类比}
+\scriptsize
+
+\begin{center}
+\textbf{拉普拉斯变换（连续）}  \textbf{z变换（离散）} \\
+稳定：$\text{Re}(s)<0$  稳定：$|z|<1$ \\
+临界稳定：虚轴  临界稳定：单位圆 \\
+不稳定：$\text{Re}(s)>0$  不稳定：$|z|>1$ \\
+\end{center}
+
+\textbf{映射关系：}$z = e^{sT}$ 或 $s = \frac{1}{T}\ln z$
+\begin{itemize}
+\itemsep=0pt
+\item $s$左半平面 $\leftrightarrow$ $z$单位圆内
+\item $s$虚轴 $\leftrightarrow$ $z$单位圆
+\item $s$右半平面 $\leftrightarrow$ $z$单位圆外
+\item 主频带：$-\pi/T < \omega < \pi/T$
+\end{itemize}
+
+\noindent\textbf{十二、采样理论}
+\scriptsize
+
+\textbf{冲激串采样：}
+\begin{itemize}
+\itemsep=0pt
+\item 采样信号：$x_p(t) = x(t)p(t) = x(t)\sum_{n=-\infty}^{\infty}\delta(t-nT)$
+\item 频域：$X_p(j\omega) = \frac{1}{T}\sum_{k=-\infty}^{\infty}X(j(\omega-k\omega_s))$，$\omega_s=\frac{2\pi}{T}$
+\item 频谱周期延拓，周期为$\omega_s$
+\end{itemize}
+
+\textbf{采样定理（Nyquist）：}
+\begin{itemize}
+\itemsep=0pt
+\item 若$x(t)$带限于$\omega_M$，即$X(j\omega)=0$，$|\omega|>\omega_M$
+\item 采样频率$\omega_s \geq 2\omega_M$（Nyquist率），可无失真恢复
+\item 恢复：理想低通滤波器$H_r(j\omega) = \begin{cases} T, & |\omega|<\omega_c \\ 0, & |\omega|\geq\omega_c \end{cases}$
+\item 其中$\omega_M < \omega_c < \omega_s-\omega_M$
+\end{itemize}
+
+\textbf{零阶保持（ZOH）采样：}
+\begin{itemize}
+\itemsep=0pt
+\item $x_0(t) = \sum_{n=-\infty}^{\infty}x(nT)\text{rect}(\frac{t-nT-T/2}{T})$
+\item 频域：$X_0(j\omega) = H_0(j\omega)X_p(j\omega)$
+\item $H_0(j\omega) = T\text{sinc}(\frac{\omega T}{2})e^{-j\omega T/2}$
+\end{itemize}
+
+\textbf{线性内插：}
+\begin{itemize}
+\itemsep=0pt
+\item $x_1(t) = \sum_{n=-\infty}^{\infty}x(nT)\text{tri}(\frac{t-nT}{T})$
+\item 频域：$X_1(j\omega) = H_1(j\omega)X_p(j\omega)$
+\item $H_1(j\omega) = T\text{sinc}^2(\frac{\omega T}{2})$
+\end{itemize}
+
+\textbf{离散时间处理连续信号：}
+\textbf{C/D转换（连续到离散）：}
+   \begin{itemize}
+   \itemsep=0pt
+   \item 采样：$x[n] = x_c(nT)$
+   \item 频域关系：$X(e^{j\omega}) = \frac{1}{T}\sum_{k=-\infty}^{\infty}X_c(j\frac{\omega-2\pi k}{T})$
+   \end{itemize}
+\textbf{离散时间处理：}
+   \begin{itemize}
+   \itemsep=0pt
+   \item 离散系统：$Y(e^{j\omega}) = H(e^{j\omega})X(e^{j\omega})$
+   \item 等效连续频率：$\Omega = \omega T$
+   \end{itemize}
+\textbf{D/C转换（离散到连续）：}
+   \begin{itemize}
+   \itemsep=0pt
+   \item 理想重建：$y_c(t) = \sum_{n=-\infty}^{\infty}y[n]\frac{\sin(\pi(t-nT)/T)}{\pi(t-nT)/T}$
+   \item 零阶保持：$y_c(t) = \sum_{n=-\infty}^{\infty}y[n]\text{rect}(\frac{t-nT-T/2}{T})$
+   \end{itemize}
+\textbf{整体系统：}
+   \begin{itemize}
+   \itemsep=0pt
+   \item 等效连续系统：$H_{eff}(j\Omega) = H(e^{j\Omega T})$，$|\Omega|<\pi/T$
+   \item 采样频率足够高时近似连续滤波器
+   \end{itemize}
+
+
+\textbf{混叠（Aliasing）：}
+\begin{itemize}
+\itemsep=0pt
+\item 当$\omega_s < 2\omega_M$时，频谱混叠
+\item 高频成分"伪装"成低频，无法恢复
+\item 解决：预滤波（抗混叠滤波器）
+\end{itemize}
+\textbf{注意：}
+\begin{itemize}
+\itemsep=0pt
+\item 审题
+\item 求单位冲激响应还是单位阶跃响应
+\item 注意题目中是否隐含因果性和稳定性
+\item 注意拉氏变换和z变换的收敛域（每一步都要求）
+\item 求响应前注意收敛域是否存在，若不存在用本征函数或卷积
+
+\end{itemize}
+
+\end{multicols}
+
+\end{document}

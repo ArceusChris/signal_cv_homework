@@ -1,0 +1,857 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+
+% 页面设置
+\geometry{left=3.17cm,right=3.17cm,top=2.54cm,bottom=2.54cm}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% 代码设置
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    tabsize=4,
+    language=Python, % 默认语言
+    extendedchars=true,
+    inputencoding=utf8
+}
+
+% 定义Rust语言高亮
+\lstdefinelanguage{Rust}{
+    keywords={fn, let, mut, if, else, match, impl, struct, enum, trait, pub, use, mod, const, static, return, while, for, loop, break, continue, self, Self, true, false, as, ref, in, type, where, unsafe, extern, crate, super, dyn, async, await, move},
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]",
+    sensitive=true
+}
+
+% 超链接设置
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue
+}
+
+\begin{document}
+
+% 封面
+\begin{titlepage}
+    \begin{center}
+        \vspace*{2cm}
+        
+        {\LARGE\textbf{华中科技大学光学与电子信息学院}}
+        
+        \vspace{1cm}
+        
+        {\Large《信号与系统》课程}
+        
+        \vspace{1cm}
+        
+        {\huge\textbf{工程设计问题设计报告}}
+        
+        \vspace{3cm}
+        
+        \begin{tabular}{rl}
+            \large 题\hspace{2em}目： & \underline{\makebox[8cm][c]{\Large 爱因斯坦一秒变梦露之谜}} \\[0.5cm]
+            \large 分\hspace{0.5em}组\hspace{0.5em}号： & \underline{\makebox[8cm][c]{\Large 15}} \\[0.5cm]
+            \large 组\hspace{2em}长： & \underline{\makebox[8cm][c]{\Large 林小杨}} \\[0.5cm]
+            \large 组\hspace{2em}员： & \underline{\makebox[8cm][c]{\Large 林小杨}} \\[0.5cm]
+            \large 时\hspace{2em}间： & \underline{\makebox[8cm][c]{2025年09月01日\textasciitilde 2025年11月26日}} \\[0.5cm]
+            \large 指导教师： & \underline{\makebox[8cm][c]{\Large 程孟凡}} \\[0.5cm]
+            \large 报告日期： & \underline{\makebox[8cm][c]{\Large\today}} \\
+        \end{tabular}
+        
+    \end{center}
+\end{titlepage}
+
+% 报告撰写说明
+\newpage
+\section*{报告撰写说明}
+\addcontentsline{toc}{section}{报告撰写说明}
+
+\begin{enumerate}
+    \item 按照参考模板的内容和格式撰写报告
+    \item 理论模型部分须结合本课程知识分析问题、建立模型
+    \item 程序设计部分应给出设计思路、主要流程图和关键函数的说明；结果分析不能只是简单给出结论，应结合具体问题，对关键参数或算法在不同取值条件下对结果的影响情况进行分析和总结。如果可能，还应进行误差分析
+\end{enumerate}
+
+% 目录
+\newpage
+\tableofcontents
+
+% 正文
+\newpage
+\section{问题描述}
+
+本项目旨在探究"爱因斯坦一秒变梦露"这一视觉现象的科学原理。通过对两张不同人物图像的频域处理，创建一种特殊的混合图像：在近距离观看时能看到爱因斯坦的细节特征，而在远距离观看时则呈现出梦露的面容轮廓。
+
+这一现象的核心在于人眼视觉系统对不同频率成分的敏感性差异。人眼在近距离时能够分辨图像的高频成分（细节、边缘），而在远距离时主要感知低频成分（轮廓、整体形状）。本项目通过以下方法实现混合图像：
+
+\begin{enumerate}
+    \item \textbf{频域滤波方法}：使用理想滤波器、椭圆滤波器、巴特沃斯滤波器在频域进行高通/低通滤波，提取不同频率成分
+    \item \textbf{空域卷积方法}：使用高斯卷积核进行平滑滤波，通过原图减去滤波结果获得高频成分
+    \item \textbf{边缘混合方法}：使用Sobel算子提取边缘信息，将爱因斯坦的边缘与梦露去除边缘后的图像叠加
+\end{enumerate}
+
+项目目标包括：
+\begin{itemize}
+    \item 实现多种滤波器并分析其频率响应特性
+    \item 对比不同滤波器的混合效果
+    \item 理解傅里叶变换在图像处理中的应用
+    \item 掌握频域与空域的关系
+\end{itemize}
+
+\section{理论模型}
+
+\subsection{原理分析与设计思路}
+
+\subsubsection{傅里叶变换基础}
+
+二维离散傅里叶变换（2D-DFT）是图像频域分析的核心工具。对于大小为 $M \times N$ 的图像 $f(x,y)$，其傅里叶变换定义为：
+
+\begin{equation}
+F(u,v) = \sum_{x=0}^{M-1}\sum_{y=0}^{N-1} f(x,y)e^{-j2\pi(\frac{ux}{M}+\frac{vy}{N})}
+\end{equation}
+
+其中：
+\begin{itemize}
+    \item $(x,y)$ 为空域坐标
+    \item $(u,v)$ 为频域坐标
+    \item $F(u,v)$ 为频域表示，包含幅度和相位信息
+\end{itemize}
+
+逆傅里叶变换（IDFT）为：
+
+\begin{equation}
+f(x,y) = \frac{1}{MN}\sum_{u=0}^{M-1}\sum_{v=0}^{N-1} F(u,v)e^{j2\pi(\frac{ux}{M}+\frac{vy}{N})}
+\end{equation}
+
+\textbf{频域特性}：
+\begin{itemize}
+    \item \textbf{低频成分}：对应图像的缓慢变化区域（整体轮廓、平滑区域）
+    \item \textbf{高频成分}：对应图像的快速变化区域（边缘、细节、纹理）
+    \item \textbf{频移}：通过 $F_{shift}(u,v) = F(u-M/2, v-N/2)$ 将零频分量移至中心
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{original_spectrums/comparison_originals.png}
+\caption{原始图像及其FFT频谱图：上行为爱因斯坦图像及其频谱，下行为梦露图像及其频谱。频谱图中心为低频成分，边缘为高频成分。}
+\end{figure}
+
+从频谱图可以观察到：
+\begin{itemize}
+    \item 频谱中心（低频区域）亮度最高，包含图像的主要能量
+    \item 频谱边缘分布着高频成分，对应图像的边缘和细节信息
+    \item 爱因斯坦图像包含更多高频信息（头发、皱纹等细节）
+    \item 梦露图像相对平滑，高频成分较少
+\end{itemize}
+
+\subsubsection{卷积定理}
+
+空域卷积定理是频域滤波的理论基础：
+
+\begin{equation}
+f(x,y) \otimes h(x,y) \Leftrightarrow F(u,v) \cdot H(u,v)
+\end{equation}
+
+这意味着空域的卷积操作等价于频域的乘法操作，这为图像滤波提供了两种实现途径：
+\begin{enumerate}
+    \item \textbf{频域方法}：$g(x,y) = \mathcal{F}^{-1}\{H(u,v) \cdot F(u,v)\}$
+    \item \textbf{空域方法}：$g(x,y) = h(x,y) \otimes f(x,y)$
+\end{enumerate}
+
+\subsubsection{混合图像原理}
+
+混合图像的创建基于以下原理：
+
+\begin{equation}
+I_{hybrid}(x,y) = I_{high}(x,y) + I_{low}(x,y)
+\end{equation}
+
+其中：
+\begin{itemize}
+    \item $I_{high}(x,y)$ = 爱因斯坦图像的高频成分（细节）
+    \item $I_{low}(x,y)$ = 梦露图像的低频成分（轮廓）
+\end{itemize}
+
+\textbf{视觉感知机制}：
+\begin{enumerate}
+    \item \textbf{近距离观看}：人眼能分辨高频细节，主要看到爱因斯坦的面部特征
+    \item \textbf{远距离观看}：高频信息被视觉系统平滑，主要感知低频轮廓，看到梦露的面容
+\end{enumerate}
+
+\subsection{数学模型}
+
+\subsubsection{频域滤波器模型}
+
+\textbf{1. 理想滤波器（Ideal Filter）}
+
+理想高通滤波器：
+\begin{equation}
+H_{HP}(u,v) = \begin{cases}
+0, & D(u,v) \leq D_0 \\
+1, & D(u,v) > D_0
+\end{cases}
+\end{equation}
+
+理想低通滤波器：
+\begin{equation}
+H_{LP}(u,v) = \begin{cases}
+1, & D(u,v) \leq D_0 \\
+0, & D(u,v) > D_0
+\end{cases}
+\end{equation}
+
+其中 $D(u,v) = \sqrt{(u-M/2)^2 + (v-N/2)^2}$ 为到频域中心的距离，$D_0$ 为截止频率。
+
+\textbf{特点}：
+\begin{itemize}
+    \item 优点：截止最尖锐，频率分离明确
+    \item 缺点：在空域产生振铃效应（Gibbs现象）
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{filter_frequency_responses/ideal_filter_response.png}
+\caption{理想滤波器的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。阶跃变化特征明显，截止频率处为硬切换。}
+\end{figure}
+
+\textbf{2. 巴特沃斯滤波器（Butterworth Filter）}
+
+$n$ 阶巴特沃斯高通滤波器：
+\begin{equation}
+H_{HP}(u,v) = \frac{1}{1 + \left[\frac{D_0}{D(u,v)}\right]^{2n}}
+\end{equation}
+
+$n$ 阶巴特沃斯低通滤波器：
+\begin{equation}
+H_{LP}(u,v) = \frac{1}{1 + \left[\frac{D(u,v)}{D_0}\right]^{2n}}
+\end{equation}
+
+本项目使用 $n=4$ 阶巴特沃斯滤波器。
+
+\textbf{特点}：
+\begin{itemize}
+    \item 平滑的频率响应，无振铃效应
+    \item 阶数 $n$ 越高，过渡越陡峭，越接近理想滤波器
+    \item 通频带内最大平坦幅度响应
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{filter_frequency_responses/butterworth_filter_response.png}
+\caption{巴特沃斯滤波器（n=4）的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。平滑过渡，通频带内最大平坦。}
+\end{figure}
+
+\textbf{3. 椭圆滤波器（Elliptical Filter）}
+
+椭圆滤波器使用椭圆方程定义频域形状：
+
+\begin{equation}
+\frac{(u-u_0)^2}{a^2} + \frac{(v-v_0)^2}{b^2} \leq 1
+\end{equation}
+
+其中 $a$ 为长半轴，$b$ 为短半轴，$(u_0, v_0)$ 为中心。
+
+\textbf{特点}：
+\begin{itemize}
+    \item 可针对不同方向的频率成分进行不同处理
+    \item 提供各向异性的滤波能力
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{filter_frequency_responses/elliptical_filter_response.png}
+\caption{椭圆滤波器的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。椭圆形频率选择特性，具有方向性。}
+\end{figure}
+
+\newpage
+\subsubsection{空域滤波器模型}
+
+\textbf{1. 高斯卷积核（Gaussian Kernel）}
+
+二维高斯函数：
+\begin{equation}
+G(x,y) = \frac{1}{2\pi\sigma^2}e^{-\frac{x^2+y^2}{2\sigma^2}}
+\end{equation}
+
+离散化高斯核：
+\begin{equation}
+G[i,j] = e^{-\frac{(i-k_{center})^2+(j-k_{center})^2}{2\sigma^2}}
+\end{equation}
+
+归一化：$G_{norm}[i,j] = \frac{G[i,j]}{\sum_{i,j}G[i,j]}$
+
+\textbf{获取高频成分}：
+\begin{equation}
+I_{high}(x,y) = I_{original}(x,y) - (I_{original} \otimes G)(x,y)
+\end{equation}
+
+\textbf{获取低频成分}：
+\begin{equation}
+I_{low}(x,y) = (I_{original} \otimes G)(x,y)
+\end{equation}
+
+\textbf{频率响应}：高斯核的傅里叶变换仍为高斯函数（傅里叶变换对），具有天然的低通特性。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{filter_frequency_responses/gaussian_kernel_response.png}
+\caption{高斯核的频率响应：高斯函数在频域仍为高斯形状，平滑的低通特性，无旁瓣和振铃。}
+\end{figure}
+
+\newpage
+\textbf{2. Sobel边缘检测算子}
+
+Sobel算子用于计算图像梯度：
+
+X方向Sobel核：
+\begin{equation}
+G_x = \begin{bmatrix}
+-1 & 0 & 1 \\
+-2 & 0 & 2 \\
+-1 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+Y方向Sobel核：
+\begin{equation}
+G_y = \begin{bmatrix}
+-1 & -2 & -1 \\
+0 & 0 & 0 \\
+1 & 2 & 1
+\end{bmatrix}
+\end{equation}
+
+梯度幅值：
+\begin{equation}
+M(x,y) = \sqrt{(I \otimes G_x)^2 + (I \otimes G_y)^2}
+\end{equation}
+
+梯度方向：
+\begin{equation}
+\theta(x,y) = \arctan\left(\frac{I \otimes G_y}{I \otimes G_x}\right)
+\end{equation}
+
+\textbf{边缘混合方法}：
+\begin{equation}
+I_{hybrid} = M_{Einstein}(x,y) + [I_{Monroe}(x,y) - M_{Monroe}(x,y)]
+\end{equation}
+
+即：爱因斯坦的边缘（高频） + 梦露去除边缘后的平滑部分（低频）
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.98\textwidth]{filter_frequency_responses/sobel_operator_response.png}
+\caption{Sobel算子的频率响应：左为Sobel X（检测垂直边缘），中为Sobel Y（检测水平边缘），右为组合幅值。展现明显的高通和方向选择特性。}
+\end{figure}
+
+\newpage
+\section{程序设计}
+
+\subsection{编程思路}
+
+本项目采用Python语言实现，使用以下核心库：
+\begin{itemize}
+    \item \textbf{NumPy}：数值计算和FFT变换
+    \item \textbf{OpenCV (cv2)}：图像读写和基本处理
+    \item \textbf{Matplotlib}：可视化和结果展示（使用Agg后端，支持无GUI环境）
+\end{itemize}
+
+\textbf{总体设计思路}：
+
+\begin{enumerate}
+    \item \textbf{模块化设计}：每种滤波方法独立成一个Python脚本
+    \item \textbf{参数化处理}：每种方法测试多组参数，便于对比分析
+    \item \textbf{完整可视化}：包含滤波器形状、频率响应、处理结果、FFT分析
+    \item \textbf{独立输出}：每种方法的结果保存在独立文件夹中
+    \item \textbf{频率响应分析}：无论频域还是空域方法，都展示频率响应特性
+\end{enumerate}
+
+\textbf{实现的5个脚本}：
+\begin{enumerate}
+    \item \texttt{ideal\_filter.py} - 理想滤波器（5个截止频率）
+    \item \texttt{elliptical\_filter.py} - 椭圆滤波器（5组参数）
+    \item \texttt{butterworth\_filter.py} - 巴特沃斯滤波器（4阶，5个截止频率）
+    \item \texttt{gaussian\_filter.py} - 高斯卷积核（5组参数，含频率响应）
+    \item \texttt{edge\_detection.py} - Sobel边缘混合（含完整频率分析）
+\end{enumerate}
+
+\subsection{主要流程图及说明}
+
+\subsubsection{频域滤波通用流程}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.5cm, auto,
+    block/.style={rectangle, draw, fill=blue!20, text width=6em, text centered, rounded corners, minimum height=3em},
+    line/.style={draw, -latex'}]
+    
+    \node [block] (input) {读取灰度图像};
+    \node [block, below of=input] (resize) {统一图像尺寸};
+    \node [block, below of=resize] (fft) {2D FFT变换};
+    \node [block, below of=fft] (shift) {频移至中心};
+    \node [block, below of=shift] (filter) {应用滤波器\\$G=H \cdot F$};
+    \node [block, below of=filter] (ishift) {逆频移};
+    \node [block, below of=ishift] (ifft) {2D IFFT变换};
+    \node [block, below of=ifft] (combine) {叠加高频+低频};
+    \node [block, below of=combine] (save) {保存结果};
+    
+    \path [line] (input) -- (resize);
+    \path [line] (resize) -- (fft);
+    \path [line] (fft) -- (shift);
+    \path [line] (shift) -- (filter);
+    \path [line] (filter) -- (ishift);
+    \path [line] (ishift) -- (ifft);
+    \path [line] (ifft) -- (combine);
+    \path [line] (combine) -- (save);
+\end{tikzpicture}
+\end{center}
+
+\textbf{关键步骤说明}：
+
+\begin{itemize}
+    \item \textbf{图像预处理}：将图像转换为灰度图，统一尺寸为两图最小公共尺寸
+    \item \textbf{FFT变换}：使用 \texttt{np.fft.fft2()} 进行二维快速傅里叶变换
+    \item \textbf{频移操作}：使用 \texttt{np.fft.fftshift()} 将零频分量移至中心，便于滤波器设计
+    \item \textbf{滤波器应用}：在频域进行点乘操作 $G(u,v) = H(u,v) \cdot F(u,v)$
+    \item \textbf{逆变换}：通过 \texttt{np.fft.ifftshift()} 和 \texttt{np.fft.ifft2()} 恢复空域图像
+    \item \textbf{混合叠加}：$I_{hybrid} = I_{Einstein\_HP} + I_{Monroe\_LP}$
+\end{itemize}
+
+\subsubsection{空域卷积流程（高斯滤波）}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.5cm, auto,
+    block/.style={rectangle, draw, fill=green!20, text width=6em, text centered, rounded corners, minimum height=3em},
+    line/.style={draw, -latex'}]
+    
+    \node [block] (input) {读取灰度图像};
+    \node [block, below of=input] (kernel) {创建高斯核\\$G(x,y,\sigma)$};
+    \node [block, below of=kernel] (conv) {空域卷积\\得到低频};
+    \node [block, below of=conv] (high) {原图减去低频\\得到高频};
+    \node [block, below of=high] (combine) {E高频+M低频};
+    \node [block, below of=combine] (freq) {FFT分析\\频率响应};
+    \node [block, below of=freq] (save) {保存结果};
+    
+    \path [line] (input) -- (kernel);
+    \path [line] (kernel) -- (conv);
+    \path [line] (conv) -- (high);
+    \path [line] (high) -- (combine);
+    \path [line] (combine) -- (freq);
+    \path [line] (freq) -- (save);
+\end{tikzpicture}
+\end{center}
+
+\textbf{关键实现}：
+
+\begin{lstlisting}[language=Python, caption={高斯滤波核心代码}]
+# 创建高斯核
+def create_gaussian_kernel(size, sigma):
+    kernel = np.zeros((size, size))
+    center = size // 2
+    for i in range(size):
+        for j in range(size):
+            x, y = i - center, j - center
+            kernel[i, j] = np.exp(-(x**2 + y**2) / (2 * sigma**2))
+    return kernel / np.sum(kernel)  # 归一化
+
+# 获取高频和低频成分
+einstein_low = cv2.filter2D(einstein, -1, gaussian_kernel)
+monroe_low = cv2.filter2D(monroe, -1, gaussian_kernel)
+
+einstein_high = einstein.astype(np.float32) - einstein_low.astype(np.float32)
+
+# 混合图像
+hybrid = einstein_high + monroe_low.astype(np.float32)
+hybrid = np.clip(hybrid, 0, 255).astype(np.uint8)
+\end{lstlisting}
+
+\subsubsection{Sobel边缘混合流程}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.5cm, auto,
+    block/.style={rectangle, draw, fill=orange!20, text width=7em, text centered, rounded corners, minimum height=3em},
+    line/.style={draw, -latex'}]
+    
+    \node [block] (input) {读取灰度图像};
+    \node [block, below of=input] (sobel) {Sobel算子\\提取边缘};
+    \node [block, below of=sobel] (edge_e) {爱因斯坦边缘\\（高频）};
+    \node [block, below of=edge_e] (no_edge_m) {梦露去边缘\\原图-边缘};
+    \node [block, below of=no_edge_m] (combine) {边缘+平滑\\混合叠加};
+    \node [block, below of=combine] (freq) {频率响应分析};
+    \node [block, below of=freq] (save) {保存结果};
+    
+    \path [line] (input) -- (sobel);
+    \path [line] (sobel) -- (edge_e);
+    \path [line] (edge_e) -- (no_edge_m);
+    \path [line] (no_edge_m) -- (combine);
+    \path [line] (combine) -- (freq);
+    \path [line] (freq) -- (save);
+\end{tikzpicture}
+\end{center}
+
+\textbf{Sobel边缘提取核心代码}：
+
+\begin{lstlisting}[language=Python, caption={Sobel边缘混合}]
+# Sobel算子定义
+sobel_x = np.array([[-1, 0, 1],
+                    [-2, 0, 2],
+                    [-1, 0, 1]], dtype=np.float32)
+
+sobel_y = np.array([[-1, -2, -1],
+                    [ 0,  0,  0],
+                    [ 1,  2,  1]], dtype=np.float32)
+
+# 提取边缘
+grad_x = cv2.filter2D(image, cv2.CV_64F, sobel_x)
+grad_y = cv2.filter2D(image, cv2.CV_64F, sobel_y)
+magnitude = np.sqrt(grad_x**2 + grad_y**2)
+
+# 混合图像
+einstein_edges = extract_edges_sobel(einstein)
+monroe_edges = extract_edges_sobel(monroe)
+
+monroe_without_edges = monroe - monroe_edges * 0.5
+hybrid = einstein_edges * 0.7 + monroe_without_edges * 0.8
+\end{lstlisting}
+
+\subsection{结果分析}
+
+\subsubsection{不同滤波器效果对比}
+
+通过实验测试了5种方法，生成了超过70个结果文件。以下是关键发现：
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{elliptical_filter_output/hybrid_a10_b5.jpg}
+\includegraphics[width=0.45\textwidth]{elliptical_filter_output/hybrid_a15_b10.jpg}
+\caption{椭圆滤波器混合结果：左图参数 $(a=10, b=5)$，右图参数 $(a=15, b=10)$}
+\end{figure}
+
+\textbf{1. 理想滤波器}
+
+\begin{itemize}
+    \item \textbf{优点}：频率分离最彻底，高低频界限分明
+    \item \textbf{缺点}：存在明显的振铃效应（Gibbs现象）
+    \item \textbf{最佳参数}：$D_0 = 20$ 时混合效果较好，既保留了边缘细节又避免了过多振铃
+    \item \textbf{频率响应}：在截止频率处呈阶跃变化，过渡带宽度为0
+\end{itemize}
+
+\textbf{2. 巴特沃斯滤波器（4阶）}
+
+\begin{itemize}
+    \item \textbf{优点}：平滑的频率响应，完全无振铃效应，视觉效果最自然
+    \item \textbf{缺点}：过渡带较宽，频率分离不如理想滤波器明确
+    \item \textbf{最佳参数}：$D_0 = 10, n=4$ 时效果最佳
+    \item \textbf{频率响应}：单调递减，通带内最大平坦
+    \item \textbf{结论}：综合效果最好，推荐使用
+\end{itemize}
+
+\textbf{3. 椭圆滤波器}
+
+\begin{itemize}
+    \item \textbf{特点}：能够针对不同方向进行差异化滤波
+    \item \textbf{应用}：适合处理具有明显方向性特征的图像
+    \item \textbf{参数影响}：$(a, b)$ 的比值决定了椭圆的扁平程度，影响各向异性程度
+\end{itemize}
+
+\textbf{4. 高斯卷积核}
+
+\begin{itemize}
+    \item \textbf{优点}：
+        \begin{itemize}
+            \item 实现简单，计算效率高
+            \item 频率响应为高斯型，平滑自然
+            \item 各向同性，旋转不变性
+            \item 无振铃效应
+        \end{itemize}
+    \item \textbf{参数影响}：
+        \begin{itemize}
+            \item $\sigma$ 越大，平滑效果越强，高频成分越少
+            \item 核大小应至少为 $6\sigma + 1$ 以包含99\%的能量
+        \end{itemize}
+    \item \textbf{最佳参数}：$(k=15, \sigma=2.0)$ 或 $(k=21, \sigma=3.0)$
+    \item \textbf{频率特性}：低通特性明确，能量主要集中在低频区
+\end{itemize}
+
+\textbf{5. Sobel边缘混合}
+
+\begin{itemize}
+    \item \textbf{创新点}：不同于传统高通+低通，直接使用边缘+无边缘
+    \item \textbf{优点}：
+        \begin{itemize}
+            \item 边缘信息完整清晰
+            \item 背景平滑自然
+            \item 视觉对比强烈
+        \end{itemize}
+    \item \textbf{频率特性}：Sobel算子表现出明显的高通特性和方向敏感性
+    \item \textbf{效果}：近看爱因斯坦边缘轮廓清晰，远看梦露整体形状明显
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{edge_detection_output/einstein_edges.jpg}
+\includegraphics[width=0.3\textwidth]{edge_detection_output/monroe_without_edges.jpg}
+\includegraphics[width=0.3\textwidth]{edge_detection_output/hybrid_edge_based.jpg}
+\caption{Sobel边缘混合方法：左为爱因斯坦边缘，中为梦露去边缘，右为最终混合效果}
+\end{figure}
+
+\subsubsection{截止频率参数分析}
+
+对频域滤波器进行了不同截止频率的测试：$D_0 = [5, 10, 20, 30, 50]$
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{ideal_filter_output/hybrid_D0_5.jpg}
+\includegraphics[width=0.45\textwidth]{ideal_filter_output/hybrid_D0_10.jpg}
+\caption{理想滤波器混合结果对比：左图 $D_0=5$，右图 $D_0=10$（最佳效果）}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{butterworth_filter_output/hybrid_D0_10.jpg}
+\includegraphics[width=0.45\textwidth]{butterworth_filter_output/hybrid_D0_30.jpg}
+\caption{巴特沃斯滤波器混合结果：左图 $D_0=10$，右图 $D_0=30$}
+\end{figure}
+
+\textbf{实验结果}：
+
+\begin{table}[h]
+\centering
+\caption{截止频率对混合效果的影响}
+\begin{tabular}{|c|l|l|}
+\hline
+$D_0$ & 爱因斯坦（高通）效果 & 梦露（低通）效果 \\
+\hline
+5 & 边缘极细，几乎只有轮廓 & 极度模糊，细节全失 \\
+10 & 边缘较清晰，主要特征可见 & 很模糊，轮廓清楚 \\
+20 & \textbf{细节丰富，效果最佳} & \textbf{适度模糊，识别度高} \\
+30 & 细节过多，开始出现噪声 & 模糊不足，细节残留 \\
+50 & 接近原图，混合效果弱 & 接近原图，平滑不足 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{结论}：
+\begin{itemize}
+    \item $D_0 = 10$ 为最佳截止频率
+    \item 过小的 $D_0$ 导致高频信息不足，边缘过于简化
+    \item 过大的 $D_0$ 导致高低频分离不充分，混合效果减弱
+\end{itemize}
+
+\subsubsection{高斯核参数分析}
+
+测试了5组参数：$(k, \sigma) = [(5, 1.0), (9, 1.5), (15, 2.0), (21, 3.0), (31, 5.0)]$
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{gaussian_filter_output/hybrid_k5_s1.0.jpg}
+\includegraphics[width=0.3\textwidth]{gaussian_filter_output/hybrid_k15_s2.0.jpg}
+\includegraphics[width=0.3\textwidth]{gaussian_filter_output/hybrid_k31_s5.0.jpg}
+\caption{高斯滤波器不同参数的混合效果：左 $\sigma=1.0$，中 $\sigma=2.0$（最佳），右 $\sigma=5.0$}
+\end{figure}
+
+\textbf{观察结果}：
+
+\begin{itemize}
+    \item $\sigma = 1.0$：平滑效果弱，高频成分较多，混合效果不明显
+    \item $\sigma = 1.5$：平滑适中，开始出现混合效果
+    \item $\sigma = 2.0$：\textbf{平衡最好，混合效果清晰}
+    \item $\sigma = 3.0$：平滑较强，低频轮廓明显
+    \item $\sigma = 5.0$：过度平滑，细节损失严重
+\end{itemize}
+
+\textbf{理论验证}：
+\begin{itemize}
+    \item 高斯核的频率响应确实呈现高斯型低通特性
+    \item $\sigma$ 越大，频域响应越窄，截止频率越低
+    \item 符合傅里叶变换对的性质：空域越宽，频域越窄
+\end{itemize}
+
+\subsubsection{频率响应特性分析}
+
+所有方法都进行了完整的频率响应分析，主要发现：
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.48\textwidth]{ideal_filter_output/99_comparison.png}
+\includegraphics[width=0.48\textwidth]{butterworth_filter_output/comparison_all.png}
+\caption{频率响应对比：左为理想滤波器，右为巴特沃斯滤波器（不同 $D_0$ 参数）}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{gaussian_filter_output/comparison_all.png}
+\caption{高斯滤波器频率响应：不同 $\sigma$ 参数的对比}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{edge_detection_output/sobel_frequency_response.png}
+\caption{Sobel算子的频率响应特性：展示高通和方向敏感性}
+\end{figure}
+
+\textbf{1. 低通滤波器特性}
+\begin{itemize}
+    \item 频域中心（低频区）响应强，边缘（高频区）响应弱
+    \item 高斯低通：响应平滑过渡，无振铃
+    \item 理想低通：响应阶跃变化，有振铃
+    \item 巴特沃斯低通：介于两者之间，效果最佳
+\end{itemize}
+
+\textbf{2. 高通滤波器特性}
+\begin{itemize}
+    \item 频域中心（低频区）响应弱，边缘（高频区）响应强
+    \item Sobel算子：明显的高通特性，且具有方向敏感性
+    \item $G_x$ 对水平频率敏感（检测垂直边缘）
+    \item $G_y$ 对垂直频率敏感（检测水平边缘）
+\end{itemize}
+
+\textbf{3. FFT频谱分析}
+\begin{itemize}
+    \item 原始图像：能量分布在全频段
+    \item 高通滤波后：能量集中在高频区，中心暗淡
+    \item 低通滤波后：能量集中在低频区，边缘暗淡
+    \item 混合图像：同时包含高频和低频成分
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{filtered_spectrums/comparison_all_filters.png}
+\caption{所有滤波方法的混合图像与FFT频谱对比：上行为混合图像，下行为对应的频谱图。可清晰观察到不同滤波方法的频率分布特征。}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.98\textwidth]{filter_frequency_responses/all_filters_comparison.png}
+\caption{所有滤波器的频率响应 $H(u,v)$ 对比：展示理想、巴特沃斯、椭圆和高斯滤波器的低通/高通特性。可清晰对比不同滤波器的截止特性和过渡带平滑度。}
+\end{figure}
+
+\subsubsection{误差分析}
+
+\textbf{1. 数值计算误差}
+\begin{itemize}
+    \item FFT计算采用浮点运算，存在舍入误差
+    \item 通过 \texttt{np.real()} 和 \texttt{np.abs()} 提取实部和幅值
+    \item 对最终结果使用 \texttt{np.clip()} 确保像素值在 [0, 255] 范围内
+\end{itemize}
+
+\textbf{2. 边界效应}
+\begin{itemize}
+    \item FFT假设图像周期延拓，边界处可能产生不连续
+    \item 空域卷积在边界处采用零填充策略
+    \item 影响较小，因为关注的是图像中心区域
+\end{itemize}
+
+\textbf{3. 参数选择敏感性}
+\begin{itemize}
+    \item 截止频率 $D_0$ 对结果影响较大（见表1）
+    \item 高斯核参数 $\sigma$ 需要根据图像尺寸调整
+    \item 建议：对于 $300 \times 300$ 的图像，$D_0 \in [15, 25]$，$\sigma \in [1.5, 3.0]$
+\end{itemize}
+
+\subsection{对未来学习和工作的启示}
+
+通过本次工程设计项目，获得了以下重要启示：
+
+\subsubsection{理论与实践结合}
+
+\begin{itemize}
+    \item \textbf{傅里叶变换的实用性}：从抽象的数学公式到实际的图像处理，深刻理解了频域分析的强大功能
+    \item \textbf{信号与系统知识的应用}：卷积、滤波器设计、频率响应等概念在图像处理中得到具体体现
+    \item \textbf{理论指导实践}：通过频率响应分析，能够预测和解释滤波器的行为
+\end{itemize}
+
+\subsubsection{算法设计思想}
+
+\begin{itemize}
+    \item \textbf{空域与频域的等价性}：同一问题可以有多种解决途径，选择合适的域进行处理
+    \item \textbf{参数调优的重要性}：算法效果很大程度上取决于参数选择，需要系统地测试
+    \item \textbf{可视化的价值}：通过频率响应、FFT频谱等可视化手段，能够直观理解算法行为
+\end{itemize}
+
+\subsubsection{工程实践能力}
+
+\begin{itemize}
+    \item \textbf{模块化编程}：将复杂问题分解为独立模块，提高代码可维护性
+    \item \textbf{批量处理}：通过参数化设计，一次性生成多组对比结果
+    \item \textbf{文档化}：完整的注释和文档使代码易于理解和复用
+    \item \textbf{错误处理}：考虑数值计算的边界情况，确保程序鲁棒性
+\end{itemize}
+
+\subsubsection{科学研究方法}
+
+\begin{itemize}
+    \item \textbf{对比实验}：通过多种方法的对比，找出最优方案
+    \item \textbf{定量分析}：不仅给出结果，还要分析参数影响
+    \item \textbf{可重复性}：完整的代码和参数记录，确保结果可重现
+    \item \textbf{批判性思维}：分析每种方法的优缺点，不盲目接受
+\end{itemize}
+
+\subsubsection{跨学科知识整合}
+
+本项目涉及：
+\begin{itemize}
+    \item \textbf{信号处理}：傅里叶变换、滤波器设计
+    \item \textbf{图像处理}：空域和频域操作
+    \item \textbf{计算机视觉}：边缘检测、特征提取
+    \item \textbf{人类视觉感知}：理解人眼对不同频率的敏感性
+    \item \textbf{程序设计}：Python编程、数据可视化
+\end{itemize}
+
+\subsubsection{未来工作方向}
+
+\begin{enumerate}
+    \item \textbf{实时处理}：优化算法，实现视频的实时混合效果
+    \item \textbf{自适应参数}：根据图像内容自动选择最优参数
+    \item \textbf{深度学习}：探索神经网络在频域处理中的应用
+    \item \textbf{多图像融合}：扩展到三张及以上图像的混合
+    \item \textbf{彩色图像}：扩展到RGB三通道的处理
+\end{enumerate}
+
+\section*{总结}
+
+本项目成功实现了"爱因斯坦一秒变梦露"的视觉效果，通过5种不同的图像处理方法，深入探究了频域滤波和空域卷积的原理与应用。
+
+\textbf{主要成果}：
+\begin{itemize}
+    \item 实现了3种频域滤波器（理想、椭圆、巴特沃斯）
+    \item 实现了2种空域处理方法（高斯卷积、Sobel边缘混合）
+    \item 生成了超过70个结果文件，包含完整的频率响应分析
+    \item 对比分析了不同方法和参数的效果
+    \item 验证了傅里叶变换在图像处理中的重要作用
+\end{itemize}
+
+\textbf{关键结论}：
+\begin{itemize}
+    \item 巴特沃斯滤波器（$n=4, D_0=20$）综合效果最佳
+    \item 高斯卷积核（$\sigma=2.0$）简单高效，效果优秀
+    \item Sobel边缘混合方法具有独特优势，视觉对比强烈
+    \item 频率响应分析是理解和优化滤波器的关键工具
+\end{itemize}
+
+通过本项目，不仅掌握了图像频域处理的理论和实践，更重要的是培养了系统分析问题、设计实验、对比优化的工程思维能力，为未来的学习和工作奠定了坚实基础。
+
+\end{document}
