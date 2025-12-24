@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.9.7)  12 DEC 2025 19:35
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.9.7)  17 DEC 2025 22:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -512,29 +512,26 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 15.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
-[]\TU/FandolSong-Regular(0)/b/n/7 帕 塞 瓦 尔 定 理：|  $[][] \OMS/cmsy/m/n/7 j\OML/cm
-m/m/it/7 f\OT1/cmr/m/n/7 (\OML/cmm/m/it/7 t\OT1/cmr/m/n/7 )\OMS/cmsy/m/n/7 j[]\
-OML/cmm/m/it/7 dt \OT1/cmr/m/n/7 =
- []
-
-
-Overfull \hbox (5.52881pt too wide) in paragraph at lines 58--59
+Overfull \hbox (5.52881pt too wide) in paragraph at lines 57--58
 []\TU/FandolSong-Regular(0)/m/n/7 平 均 功 率：| $\OML/cmm/m/it/7 P \OT1/cmr/m/n/7 =
  [][] [] [][] \OMS/cmsy/m/n/7 j\OML/cmm/m/it/7 f\OT1/cmr/m/n/7 (\OML/cmm/m/it/7
  t\OT1/cmr/m/n/7 )\OMS/cmsy/m/n/7 j[]\OML/cmm/m/it/7 dt$ 
  []
 
 
-Overfull \hbox (10.83073pt too wide) in paragraph at lines 125--126
+Overfull \hbox (10.83073pt too wide) in paragraph at lines 132--133
 []\TU/FandolSong-Regular(0)/m/n/7 时 域 扩 展：| $\OML/cmm/m/it/7 x[]\OT1/cmr/m/n/7 
 [\OML/cmm/m/it/7 n\OT1/cmr/m/n/7 ] = []$\TU/FandolSong-Regular(0)/m/n/7 ，|
  []
 
+
+Overfull \vbox (6.18723pt too high) has occurred while \output is active []
+
+
 [1
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 338--339
+Underfull \hbox (badness 10000) in paragraph at lines 403--404
 []\TU/FandolSong-Regular(0)/m/n/7 采 样 信 号：| $\OML/cmm/m/it/7 x[]\OT1/cmr/m/n/7 
 (\OML/cmm/m/it/7 t\OT1/cmr/m/n/7 ) = \OML/cmm/m/it/7 x\OT1/cmr/m/n/7 (\OML/cmm/
 m/it/7 t\OT1/cmr/m/n/7 )\OML/cmm/m/it/7 p\OT1/cmr/m/n/7 (\OML/cmm/m/it/7 t\OT1/
@@ -542,7 +539,7 @@ cmr/m/n/7 ) =
  []
 
 
-Overfull \hbox (3.985pt too wide) in paragraph at lines 385--386
+Overfull \hbox (3.985pt too wide) in paragraph at lines 450--451
 []\TU/FandolSong-Regular(0)/m/n/7 零 阶 保 持：| $\OML/cmm/m/it/7 y[]\OT1/cmr/m/n/7 
 (\OML/cmm/m/it/7 t\OT1/cmr/m/n/7 ) = [][] \OML/cmm/m/it/7 y\OT1/cmr/m/n/7 [\OML
 /cmm/m/it/7 n\OT1/cmr/m/n/7 ][]([])$ 
@@ -555,12 +552,12 @@ L3 programming layer <2022/07/14>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 8192 strings out of 474878
- 223694 string characters out of 5762517
- 2017627 words of memory out of 5000000
- 30169 multiletter control sequences out of 15000+600000
+ 8226 strings out of 474878
+ 226242 string characters out of 5762517
+ 2035627 words of memory out of 5000000
+ 30203 multiletter control sequences out of 15000+600000
  561130 words of font info for 60 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,10n,97p,374b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,14n,97p,374b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on fomulas.pdf (2 pages).

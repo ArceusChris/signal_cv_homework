@@ -17,12 +17,12 @@
 \contentsline {subsection}{\numberline {3.3}结果分析}{14}{subsection.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.1}不同滤波器效果对比}{14}{subsubsection.3.3.1}%
 \contentsline {subsubsection}{\numberline {3.3.2}截止频率参数分析}{16}{subsubsection.3.3.2}%
-\contentsline {subsubsection}{\numberline {3.3.3}高斯核参数分析}{16}{subsubsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.3}高斯核参数分析}{17}{subsubsection.3.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.4}频率响应特性分析}{18}{subsubsection.3.3.4}%
 \contentsline {subsubsection}{\numberline {3.3.5}误差分析}{19}{subsubsection.3.3.5}%
 \contentsline {subsection}{\numberline {3.4}对未来学习和工作的启示}{20}{subsection.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}理论与实践结合}{20}{subsubsection.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}算法设计思想}{20}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.2}算法设计思想}{21}{subsubsection.3.4.2}%
 \contentsline {subsubsection}{\numberline {3.4.3}工程实践能力}{21}{subsubsection.3.4.3}%
 \contentsline {subsubsection}{\numberline {3.4.4}科学研究方法}{21}{subsubsection.3.4.4}%
 \contentsline {subsubsection}{\numberline {3.4.5}跨学科知识整合}{22}{subsubsection.3.4.5}%

@@ -49,7 +49,6 @@ f(t) &= \mathcal{F}^{-1}[F(\omega)] = \frac{1}{2\pi}\int_{-\infty}^{\infty} F(\o
 \item \textbf{积分性：} $\mathcal{F}[\int_{-\infty}^{t}f(\tau)d\tau] = \frac{F(\omega)}{j\omega} + \pi F(0)\delta(\omega)$
 \item \textbf{时域卷积：} $\mathcal{F}[f(t)*g(t)] = F(\omega)G(\omega)$
 \item \textbf{频域卷积：} $\mathcal{F}[f(t)g(t)] = \frac{1}{2\pi}F(\omega)*G(\omega)$
-\item \textbf{帕塞瓦尔定理：} $\int_{-\infty}^{\infty}|f(t)|^2dt = \frac{1}{2\pi}\int_{-\infty}^{\infty}|F(\omega)|^2d\omega$
 \item \textbf{能量与功率：}
    \begin{itemize}
    \itemsep=0pt
@@ -77,6 +76,15 @@ f(t) &= \mathcal{F}^{-1}[F(\omega)] = \frac{1}{2\pi}\int_{-\infty}^{\infty} F(\o
 
 \noindent\textbf{三、常见傅里叶变换对}
 \scriptsize
+
+\textbf{常用函数定义：}
+\begin{align*}
+\text{rect}(t) & \text{ 宽为1} \\
+\text{tri}(t) & \text{ 宽为2} \\
+\text{sinc}(t) & = \frac{\sin(\pi t)}{\pi t} \\
+\text{sa}(t) & = \frac{\sin(t)}{t}
+\end{align*}
+
 \begin{align*}
 &\delta(t) \longleftrightarrow 1 \\
 &1 \longleftrightarrow 2\pi\delta(\omega) \\
@@ -103,8 +111,7 @@ $$F(\omega) = 2\pi\sum_{n=-\infty}^{\infty}c_n\delta(\omega-n\omega_0)$$
 
 $$f(t) = \sum_{k=-\infty}^{\infty}f_0(t-kT)$$
 
-$$F(\omega) = F_0(\omega)\sum_{k=-\infty}^{\infty}e^{-jk\omega T}=$$
-$$\frac{2\pi}{T}F_0(\omega)\sum_{n=-\infty}^{\infty}\delta(\omega-n\omega_0)$$
+$$F(\omega) = \frac{2\pi}{T}F_0(\omega)\sum_{n=-\infty}^{\infty}\delta(\omega-n\omega_0)$$
 
 其中$c_n = \frac{1}{T}F_0(n\omega_0)$
 
@@ -141,8 +148,14 @@ x[n] &= \frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\omega})e^{j\omega n}d\omega
 &\delta[n-n_0] \longleftrightarrow e^{-j\omega n_0} \\
 &a^n u[n] \longleftrightarrow \frac{1}{1-ae^{-j\omega}}, \quad |a|<1 \\
 &u[n] \longleftrightarrow \frac{1}{1-e^{-j\omega}} + \pi\sum_{k=-\infty}^{\infty}\delta(\omega-2\pi k) \\
-&\text{rect}_N[n] \longleftrightarrow \frac{\sin(\omega N/2)}{\sin(\omega/2)}e^{-j\omega(N-1)/2}
+&\text{rect}_N[n] \longleftrightarrow \frac{\sin(\omega N/2)}{\sin(\omega/2)}e^{-j\omega(N-1)/2} \\
+H_{\text{LP}}(e^{j\omega}) &= \begin{cases}
+1, & |\omega| \leq \omega_c \\
+0, & \omega_c < |\omega| \leq \pi
+\end{cases} \\
+h_{\text{LP}}[n] &= \frac{\omega_c}{\pi} \cdot \frac{\sin(\omega_c n)}{\omega_c n} = \frac{\sin(\omega_c n)}{\pi n}
 \end{align*}
+其中$\omega_c$为截止频率，$h_{\text{LP}}[n]$为理想低通滤波器的冲激响应。
 
 \noindent\textbf{五、拉普拉斯变换（双边）}
 \scriptsize
@@ -209,8 +222,32 @@ x[n] &= \frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\omega})e^{j\omega n}d\omega
 
 \begin{multicols}{3}
 
-\noindent\textbf{七、连续时间LTI系统分析}
+\textbf{单边z变换：}
 \scriptsize
+
+\textbf{定义：}$X_u(z) = \mathcal{Z}_u[x[n]] = \sum_{n=0}^{\infty}x[n]z^{-n}$
+
+\textbf{时移性质（关键区别）：}
+右移$n_0>0$：
+$$\mathcal{Z}_u[x[n-n_0]] = z^{-n_0}X_u(z) + \sum_{k=0}^{n_0-1}x[k-n_0]z^{-k}$$
+左移$n_0>0$：
+$$\mathcal{Z}_u[x[n+n_0]] = z^{n_0}X_u(z) - z^{n_0}\sum_{k=0}^{n_0-1}x[k]z^{-k}$$
+\textbf{差分方程求解：}单边z变换可直接包含初始条件
+
+\textbf{应用场合：}单边适用于因果系统和初值问题；双边适用于一般信号分析
+
+
+\textbf{单边z变换求解差分方程步骤：}
+\begin{enumerate}
+\itemsep=0pt
+\item 对差分方程两边取单边z变换
+\item 代入初始条件$x[0], x[-1], \ldots$
+\item 求解$Y(z)$
+\item 反变换得$y[n]$（通常为因果序列）
+\end{enumerate}
+
+\textbf{七、连续时间LTI系统分析}
+
 
 \textbf{系统函数：}$H(s) = \frac{Y(s)}{X(s)} = \mathcal{L}[h(t)]$
 
@@ -261,6 +298,52 @@ x[n] &= \frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\omega})e^{j\omega n}d\omega
 对于$H(s) = \frac{N(s)}{D(s)}$，若极点$p_i$为单极点：
 $$H(s) = \sum_{i}\frac{r_i}{s-p_i} \quad \text{其中} \quad r_i = [(s-p_i)H(s)]_{s=p_i}$$
 
+\textbf{零输入响应与零状态响应：}
+
+\textbf{定义：}
+\begin{itemize}
+\itemsep=0pt
+\item \textbf{零输入响应}$y_{zi}(t)$：输入为零，仅由初始条件产生的响应
+\item \textbf{零状态响应}$y_{zs}(t)$：初始条件为零，仅由输入产生的响应
+\item \textbf{全响应：}$y(t) = y_{zi}(t) + y_{zs}(t)$
+\end{itemize}
+
+\textbf{求解方法（单边拉普拉斯变换法）：}
+
+\textbf{1. 零状态响应：}
+\begin{itemize}
+\itemsep=0pt
+\item 初始条件全为零
+\item 对微分方程取单边拉氏变换
+\item $Y_{zs}(s) = H(s)X(s)$，其中$H(s)$为系统函数
+\item 反变换得$y_{zs}(t) = h(t)*x(t)$（卷积）
+\end{itemize}
+
+\textbf{2. 零输入响应：}
+\begin{itemize}
+\itemsep=0pt
+\item 输入$x(t)=0$，仅考虑初始条件
+\item 对微分方程取单边拉氏变换
+\end{itemize}
+
+\textbf{3. 全响应求解步骤：}
+\begin{enumerate}
+\itemsep=0pt
+\item 对微分方程两边取单边拉氏变换（含初始条件）
+\item 求解$Y(s) = Y_{zs}(s) + Y_{zi}(s)$
+\item 部分分式展开
+\item 反变换得$y(t)$
+\end{enumerate}
+
+\textbf{注意事项：}
+\begin{itemize}
+\itemsep=0pt
+\item 初值$y(0^-), y'(0^-), \ldots$需从$t<0$状态确定
+\item 若有冲激输入，需考虑$0^-$到$0^+$的跳变
+\item 零状态响应由系统函数唯一确定
+\item 零输入响应仅与初始条件和系统特征根有关
+\end{itemize}
+
 \noindent\textbf{八、离散时间LTI系统分析}
 \scriptsize
 
@@ -310,26 +393,8 @@ $$H(s) = \sum_{i}\frac{r_i}{s-p_i} \quad \text{其中} \quad r_i = [(s-p_i)H(s)]
 
 \textbf{反馈：}$H(s) = \frac{H_1(s)}{1\pm H_1(s)H_2(s)}$ \quad （$+$负反馈，$-$正反馈）
 
-\noindent\textbf{十一、拉普拉斯与z变换类比}
-\scriptsize
 
-\begin{center}
-\textbf{拉普拉斯变换（连续）}  \textbf{z变换（离散）} \\
-稳定：$\text{Re}(s)<0$  稳定：$|z|<1$ \\
-临界稳定：虚轴  临界稳定：单位圆 \\
-不稳定：$\text{Re}(s)>0$  不稳定：$|z|>1$ \\
-\end{center}
-
-\textbf{映射关系：}$z = e^{sT}$ 或 $s = \frac{1}{T}\ln z$
-\begin{itemize}
-\itemsep=0pt
-\item $s$左半平面 $\leftrightarrow$ $z$单位圆内
-\item $s$虚轴 $\leftrightarrow$ $z$单位圆
-\item $s$右半平面 $\leftrightarrow$ $z$单位圆外
-\item 主频带：$-\pi/T < \omega < \pi/T$
-\end{itemize}
-
-\noindent\textbf{十二、采样理论}
+\noindent\textbf{十一、采样理论}
 \scriptsize
 
 \textbf{冲激串采样：}
@@ -352,9 +417,9 @@ $$H(s) = \sum_{i}\frac{r_i}{s-p_i} \quad \text{其中} \quad r_i = [(s-p_i)H(s)]
 \textbf{零阶保持（ZOH）采样：}
 \begin{itemize}
 \itemsep=0pt
-\item $x_0(t) = \sum_{n=-\infty}^{\infty}x(nT)\text{rect}(\frac{t-nT-T/2}{T})$
+\item $x_0(t) = \sum_{n=-\infty}^{\infty}x(nT)[\text{rect}(\frac{t-nT}{T}-\frac{1}{2})]$
 \item 频域：$X_0(j\omega) = H_0(j\omega)X_p(j\omega)$
-\item $H_0(j\omega) = T\text{sinc}(\frac{\omega T}{2})e^{-j\omega T/2}$
+\item $H_0(j\omega) = T\text{sa}(\frac{\omega T}{2})e^{-j\omega T/2}$
 \end{itemize}
 
 \textbf{线性内插：}
@@ -362,7 +427,7 @@ $$H(s) = \sum_{i}\frac{r_i}{s-p_i} \quad \text{其中} \quad r_i = [(s-p_i)H(s)]
 \itemsep=0pt
 \item $x_1(t) = \sum_{n=-\infty}^{\infty}x(nT)\text{tri}(\frac{t-nT}{T})$
 \item 频域：$X_1(j\omega) = H_1(j\omega)X_p(j\omega)$
-\item $H_1(j\omega) = T\text{sinc}^2(\frac{\omega T}{2})$
+\item $H_1(j\omega) = T[\frac{\sin(\omega T/2)}{\omega T/2}]^2 = T\text{sa}^2(\frac{\omega T}{2})$
 \end{itemize}
 
 \textbf{离散时间处理连续信号：}
@@ -399,6 +464,45 @@ $$H(s) = \sum_{i}\frac{r_i}{s-p_i} \quad \text{其中} \quad r_i = [(s-p_i)H(s)]
 \item 高频成分"伪装"成低频，无法恢复
 \item 解决：预滤波（抗混叠滤波器）
 \end{itemize}
+
+\textbf{离散时间采样（多速率信号处理）：}
+
+\textbf{1. 抽取（Decimation/下采样）：}
+\begin{itemize}
+\itemsep=0pt
+\item 定义：$y[n] = x[Mn]$，每$M$个样本取一个（$M$为整数）
+\item 频域：$Y(e^{j\omega}) = \frac{1}{M}\sum_{k=0}^{M-1}X(e^{j(\omega-2\pi k)/M})$
+\item 频谱周期延拓并压缩，采样率降低$M$倍
+\item 抗混叠：先低通滤波$H(e^{j\omega})$，截止频率$\omega_c = \pi/M$，再抽取
+\end{itemize}
+
+\textbf{2. 零值插入（Zero-padding/上采样）：}
+\begin{itemize}
+\itemsep=0pt
+\item 定义：$y[n] = \begin{cases} x[n/L], & n=0,\pm L,\pm 2L,\ldots \\ 0, & \text{其他} \end{cases}$（$L$为整数）
+\item 频域：$Y(e^{j\omega}) = X(e^{j\omega L})$
+\item 频谱扩展$L$倍，产生$L-1$个镜像
+\item 需后接低通滤波器去除镜像，截止频率$\omega_c = \pi/L$
+\end{itemize}
+
+\textbf{3. 内插（Interpolation/插值）：}
+\begin{itemize}
+\itemsep=0pt
+\item 定义：零值插入后低通滤波，$y[n] = (x_L[n]*h[n])$
+\item 低通滤波器：$H(e^{j\omega}) = \begin{cases} L, & |\omega|\leq\pi/L \\ 0, & \pi/L<|\omega|\leq\pi \end{cases}$
+\item 理想内插：$h[n] = \frac{\sin(\pi n/L)}{\pi n/L}$
+\item 采样率提高$L$倍，插入$L-1$个样本
+\end{itemize}
+
+\textbf{4. 离散时间冲激串采样：}
+\begin{itemize}
+\itemsep=0pt
+\item 周期序列：$p[n] = \sum_{k=-\infty}^{\infty}\delta[n-kN]$
+\item 采样：$y[n] = x[n]p[n]$
+\item 频域：$Y(e^{j\omega}) = \frac{1}{N}\sum_{k=0}^{N-1}X(e^{j(\omega-2\pi k/N)})$
+\item 频谱周期延拓，周期$2\pi/N$
+\end{itemize}
+
 \textbf{注意：}
 \begin{itemize}
 \itemsep=0pt
