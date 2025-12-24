@@ -1,4 +1,5 @@
 *_output
+*_plots
 *.aux
 *.log
 *.toc

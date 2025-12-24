@@ -4,51 +4,61 @@
 \HyPL@Entry{0<</S/D>>}
 \HyPL@Entry{1<</S/D>>}
 \@writefile{toc}{\contentsline {section}{报告撰写说明}{1}{Doc-Start}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {1}问题描述}{3}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}理论模型}{3}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}原理分析与设计思路}{3}{subsection.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}傅里叶变换基础}{3}{subsubsection.2.1.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 原始图像及其FFT频谱图：上行为爱因斯坦图像及其频谱，下行为梦露图像及其频谱。频谱图中心为低频成分，边缘为高频成分。}}{4}{figure.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}卷积定理}{5}{subsubsection.2.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.3}混合图像原理}{5}{subsubsection.2.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}数学模型}{5}{subsection.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}频域滤波器模型}{5}{subsubsection.2.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 理想滤波器的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。阶跃变化特征明显，截止频率处为硬切换。}}{6}{figure.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 巴特沃斯滤波器（n=4）的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。平滑过渡，通频带内最大平坦。}}{7}{figure.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 椭圆滤波器的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。椭圆形频率选择特性，具有方向性。}}{8}{figure.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}空域滤波器模型}{8}{subsubsection.2.2.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 高斯核的频率响应：高斯函数在频域仍为高斯形状，平滑的低通特性，无旁瓣和振铃。}}{9}{figure.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Sobel算子的频率响应：左为Sobel X（检测垂直边缘），中为Sobel Y（检测水平边缘），右为组合幅值。展现明显的高通和方向选择特性。}}{10}{figure.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}程序设计}{10}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}编程思路}{10}{subsection.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}主要流程图及说明}{11}{subsection.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}频域滤波通用流程}{11}{subsubsection.3.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}空域卷积流程（高斯滤波）}{12}{subsubsection.3.2.2}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}高斯滤波核心代码}{12}{lstlisting.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}Sobel边缘混合流程}{13}{subsubsection.3.2.3}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}Sobel边缘混合}{13}{lstlisting.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}结果分析}{14}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}不同滤波器效果对比}{14}{subsubsection.3.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces 椭圆滤波器混合结果：左图参数 $(a=10, b=5)$，右图参数 $(a=15, b=10)$}}{14}{figure.7}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Sobel边缘混合方法：左为爱因斯坦边缘，中为梦露去边缘，右为最终混合效果}}{16}{figure.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}截止频率参数分析}{16}{subsubsection.3.3.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 理想滤波器混合结果对比：左图 $D_0=5$，右图 $D_0=10$（最佳效果）}}{16}{figure.9}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces 巴特沃斯滤波器混合结果：左图 $D_0=10$，右图 $D_0=30$}}{17}{figure.10}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 截止频率对混合效果的影响}}{17}{table.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}高斯核参数分析}{17}{subsubsection.3.3.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces 高斯滤波器不同参数的混合效果：左 $\sigma =1.0$，中 $\sigma =2.0$（最佳），右 $\sigma =5.0$}}{18}{figure.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4}频率响应特性分析}{18}{subsubsection.3.3.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces 频率响应对比：左为理想滤波器，右为巴特沃斯滤波器（不同 $D_0$ 参数）}}{18}{figure.12}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces 高斯滤波器频率响应：不同 $\sigma $ 参数的对比}}{18}{figure.13}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Sobel算子的频率响应特性：展示高通和方向敏感性}}{19}{figure.14}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.5}误差分析}{19}{subsubsection.3.3.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces 所有滤波方法的混合图像与FFT频谱对比：上行为混合图像，下行为对应的频谱图。可清晰观察到不同滤波方法的频率分布特征。}}{20}{figure.15}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}对未来学习和工作的启示}{20}{subsection.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}理论与实践结合}{20}{subsubsection.3.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces 所有滤波器的频率响应 $H(u,v)$ 对比：展示理想、巴特沃斯、椭圆和高斯滤波器的低通/高通特性。可清晰对比不同滤波器的截止特性和过渡带平滑度。}}{21}{figure.16}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}算法设计思想}{21}{subsubsection.3.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.3}工程实践能力}{21}{subsubsection.3.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.4}科学研究方法}{21}{subsubsection.3.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.5}跨学科知识整合}{22}{subsubsection.3.4.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.6}未来工作方向}{22}{subsubsection.3.4.6}\protected@file@percent }
-\gdef \@abspage@last{24}
+\@writefile{toc}{\contentsline {section}{\numberline {1}问题描述}{4}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}理论模型}{4}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}原理分析与设计思路}{4}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}傅里叶变换基础}{4}{subsubsection.2.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 原始图像及其FFT频谱图：上行为爱因斯坦图像及其频谱，下行为梦露图像及其频谱。频谱图中心为低频成分，边缘为高频成分。}}{5}{figure.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}卷积定理}{6}{subsubsection.2.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.3}混合图像原理}{6}{subsubsection.2.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}数学模型}{6}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}频域滤波器模型}{6}{subsubsection.2.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 理想滤波器的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。阶跃变化特征明显，截止频率处为硬切换。}}{7}{figure.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 巴特沃斯滤波器（n=4）的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。平滑过渡，通频带内最大平坦。}}{8}{figure.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 椭圆滤波器的频率响应 $H(u,v)$：左为低通滤波器，右为高通滤波器。椭圆形频率选择特性，具有方向性。}}{9}{figure.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}空域滤波器模型}{9}{subsubsection.2.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 高斯核的频率响应：高斯函数在频域仍为高斯形状，平滑的低通特性，无旁瓣和振铃。}}{10}{figure.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Sobel算子的频率响应：左为Sobel X（检测垂直边缘），中为Sobel Y（检测水平边缘），右为组合幅值。展现明显的高通和方向选择特性。}}{11}{figure.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}程序设计}{11}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}编程思路}{11}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}主要流程图及说明}{12}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}频域滤波通用流程}{12}{subsubsection.3.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}空域卷积流程（高斯滤波）}{13}{subsubsection.3.2.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}高斯滤波核心代码}{13}{lstlisting.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}Sobel边缘混合流程}{14}{subsubsection.3.2.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}Sobel边缘混合}{14}{lstlisting.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}结果分析}{15}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}不同滤波器效果对比}{15}{subsubsection.3.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces 椭圆滤波器混合结果：左图参数 $(a=10, b=5)$，右图参数 $(a=15, b=10)$}}{15}{figure.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Sobel边缘混合方法：左为爱因斯坦边缘，中为梦露去边缘，右为最终混合效果}}{17}{figure.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}截止频率参数分析}{17}{subsubsection.3.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 理想滤波器混合结果对比：左图 $D_0=5$，右图 $D_0=10$（最佳效果）}}{17}{figure.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces 巴特沃斯滤波器混合结果：左图 $D_0=10$，右图 $D_0=30$}}{18}{figure.10}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 截止频率对混合效果的影响}}{18}{table.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}高斯核参数分析}{18}{subsubsection.3.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces 高斯滤波器不同参数的混合效果：左 $\sigma =1.0$，中 $\sigma =2.0$（最佳），右 $\sigma =5.0$}}{19}{figure.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4}频率响应特性分析}{19}{subsubsection.3.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces 频率响应对比：左为理想滤波器，右为巴特沃斯滤波器（不同 $D_0$ 参数）}}{19}{figure.12}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces 高斯滤波器频率响应：不同 $\sigma $ 参数的对比}}{19}{figure.13}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Sobel算子的频率响应特性：展示高通和方向敏感性}}{20}{figure.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}定量评估与性能分析}{20}{subsection.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces 所有滤波方法的混合图像与FFT频谱对比：上行为混合图像，下行为对应的频谱图。可清晰观察到不同滤波方法的频率分布特征。}}{21}{figure.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}评估方法与指标}{21}{subsubsection.3.4.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces 所有滤波器的频率响应 $H(u,v)$ 对比：展示理想、巴特沃斯、椭圆和高斯滤波器的低通/高通特性。可清晰对比不同滤波器的截止特性和过渡带平滑度。}}{22}{figure.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}定量评估结果}{22}{subsubsection.3.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 混合图像定量评估结果对比}}{22}{table.2}\protected@file@percent }
+\newlabel{tab:quantitative_eval}{{2}{22}{混合图像定量评估结果对比}{table.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.3}结果分析与讨论}{22}{subsubsection.3.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces 频率指标对比：左图为频率分离度评分，右图为高低频平衡比。Sobel边缘混合方法在两项指标上均表现最优。}}{23}{figure.17}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces 频率能量分布对比：蓝色为低频能量占比，红色为高频能量占比。Sobel方法具有最高的高频能量（8.32\%）。}}{23}{figure.18}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces 对比度指标对比：绿色为RMS对比度，紫色为Michelson对比度（×100）。巴特沃斯滤波器具有最高的RMS对比度。}}{24}{figure.19}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces 综合质量雷达图：从分离度、平衡性、对比度、边缘质量四个维度对比五种方法。Sobel边缘混合方法综合性能最优。}}{25}{figure.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.4}误差分析}{25}{subsubsection.3.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}对未来学习和工作的启示}{26}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}理论与实践结合}{26}{subsubsection.3.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.2}算法设计思想}{26}{subsubsection.3.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.3}工程实践能力}{26}{subsubsection.3.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.4}科学研究方法}{27}{subsubsection.3.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.5}跨学科知识整合}{27}{subsubsection.3.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.6}未来工作方向}{27}{subsubsection.3.5.6}\protected@file@percent }
+\gdef \@abspage@last{29}

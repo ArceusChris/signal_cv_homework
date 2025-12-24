@@ -1,0 +1,107 @@
+[
+  {
+    "image_path": "ideal_filter_output/hybrid_D0_20.jpg",
+    "image_name": "hybrid_D0_20.jpg",
+    "frequency_metrics": {
+      "low_freq_energy_ratio": 0.988244354724884,
+      "high_freq_energy_ratio": 0.011755486018955708,
+      "energy_concentration": 0.47412481904029846,
+      "separation_score": 0.21556709706783295,
+      "balance_ratio": 0.011895323172211647
+    },
+    "contrast_metrics": {
+      "rms_contrast": 57.527435336362785,
+      "michelson_contrast": 1.0,
+      "weber_contrast": 0.839339638619648
+    },
+    "edge_metrics": {
+      "edge_density": 0.19365599099560013,
+      "edge_strength": 42.11624618203998
+    },
+    "description": "Ideal Filter (D0=20)"
+  },
+  {
+    "image_path": "butterworth_filter_output/hybrid_d0_20.jpg",
+    "image_name": "hybrid_d0_20.jpg",
+    "frequency_metrics": {
+      "low_freq_energy_ratio": 0.9895632266998291,
+      "high_freq_energy_ratio": 0.01043681614100933,
+      "energy_concentration": 0.4773835837841034,
+      "separation_score": 0.20325244963169098,
+      "balance_ratio": 0.010546891950070858
+    },
+    "contrast_metrics": {
+      "rms_contrast": 87.76602817271277,
+      "michelson_contrast": 1.0,
+      "weber_contrast": 0.85230531066493
+    },
+    "edge_metrics": {
+      "edge_density": 0.20732630717282308,
+      "edge_strength": 55.25991989562754
+    },
+    "description": "Butterworth Filter (D0=20, n=4)"
+  },
+  {
+    "image_path": "elliptical_filter_output/hybrid_a20_b10.jpg",
+    "image_name": "hybrid_a20_b10.jpg",
+    "frequency_metrics": {
+      "low_freq_energy_ratio": 0.9872044920921326,
+      "high_freq_energy_ratio": 0.012795406393706799,
+      "energy_concentration": 0.49576643109321594,
+      "separation_score": 0.22478151321411133,
+      "balance_ratio": 0.012961252592504025
+    },
+    "contrast_metrics": {
+      "rms_contrast": 63.169331901164654,
+      "michelson_contrast": 1.0,
+      "weber_contrast": 0.8253165730174074
+    },
+    "edge_metrics": {
+      "edge_density": 0.15988949145605238,
+      "edge_strength": 45.49218071985925
+    },
+    "description": "Elliptical Filter (a=20, b=10)"
+  },
+  {
+    "image_path": "gaussian_filter_output/hybrid_k15_s2.0.jpg",
+    "image_name": "hybrid_k15_s2.0.jpg",
+    "frequency_metrics": {
+      "low_freq_energy_ratio": 0.9728013277053833,
+      "high_freq_energy_ratio": 0.02719871513545513,
+      "energy_concentration": 0.42158040404319763,
+      "separation_score": 0.3253241181373596,
+      "balance_ratio": 0.027959167957305908
+    },
+    "contrast_metrics": {
+      "rms_contrast": 82.26534776202031,
+      "michelson_contrast": 1.0,
+      "weber_contrast": 0.911456044042857
+    },
+    "edge_metrics": {
+      "edge_density": 0.16172106824925817,
+      "edge_strength": 73.14508093531873
+    },
+    "description": "Gaussian Filter (σ=2.0)"
+  },
+  {
+    "image_path": "edge_detection_output/hybrid_edge_based.jpg",
+    "image_name": "hybrid_edge_based.jpg",
+    "frequency_metrics": {
+      "low_freq_energy_ratio": 0.916806697845459,
+      "high_freq_energy_ratio": 0.08319328725337982,
+      "energy_concentration": 0.3238009810447693,
+      "separation_score": 0.5523483157157898,
+      "balance_ratio": 0.09074245393276215
+    },
+    "contrast_metrics": {
+      "rms_contrast": 66.72230130067275,
+      "michelson_contrast": 1.0,
+      "weber_contrast": 0.9750055033625863
+    },
+    "edge_metrics": {
+      "edge_density": 0.09849585592960196,
+      "edge_strength": 86.98520231938231
+    },
+    "description": "Sobel Edge Mixing"
+  }
+]

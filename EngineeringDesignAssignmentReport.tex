@@ -646,8 +646,8 @@ hybrid = einstein_edges * 0.7 + monroe_without_edges * 0.8
 $D_0$ & 爱因斯坦（高通）效果 & 梦露（低通）效果 \\
 \hline
 5 & 边缘极细，几乎只有轮廓 & 极度模糊，细节全失 \\
-10 & 边缘较清晰，主要特征可见 & 很模糊，轮廓清楚 \\
-20 & \textbf{细节丰富，效果最佳} & \textbf{适度模糊，识别度高} \\
+10 & \textbf{细节丰富，效果最佳} &  \textbf{适度模糊，识别度高} \\
+20 & 边缘较清晰，主要特征可见 & 很模糊，轮廓清楚 \\
 30 & 细节过多，开始出现噪声 & 模糊不足，细节残留 \\
 50 & 接近原图，混合效果弱 & 接近原图，平滑不足 \\
 \hline
@@ -714,6 +714,8 @@ $D_0$ & 爱因斯坦（高通）效果 & 梦露（低通）效果 \\
 \caption{Sobel算子的频率响应特性：展示高通和方向敏感性}
 \end{figure}
 
+\newpage
+
 \textbf{1. 低通滤波器特性}
 \begin{itemize}
     \item 频域中心（低频区）响应强，边缘（高频区）响应弱
@@ -749,6 +751,143 @@ $D_0$ & 爱因斯坦（高通）效果 & 梦露（低通）效果 \\
 \includegraphics[width=0.98\textwidth]{filter_frequency_responses/all_filters_comparison.png}
 \caption{所有滤波器的频率响应 $H(u,v)$ 对比：展示理想、巴特沃斯、椭圆和高斯滤波器的低通/高通特性。可清晰对比不同滤波器的截止特性和过渡带平滑度。}
 \end{figure}
+
+\subsection{定量评估与性能分析}
+
+为了客观评价不同滤波方法的混合效果，本节对生成的混合图像进行定量评估，采用多个指标从频域和空域两个角度分析图像质量。
+
+\subsubsection{评估方法与指标}
+
+\textbf{1. 频率分离度（Frequency Separation Score）}
+
+频率分离度衡量混合图像中高频和低频成分的共存程度，定义为：
+\begin{equation}
+S_{sep} = 2\sqrt{E_{low} \cdot E_{high}}
+\end{equation}
+
+其中：
+\begin{itemize}
+    \item $E_{low} = \frac{\sum_{D(u,v) \leq D_0} |F(u,v)|^2}{\sum |F(u,v)|^2}$ 为低频能量占比
+    \item $E_{high} = \frac{\sum_{D(u,v) > D_0} |F(u,v)|^2}{\sum |F(u,v)|^2}$ 为高频能量占比
+    \item $S_{sep} \in [0, 1]$，越接近1表示高低频分离越清晰
+\end{itemize}
+
+\textbf{2. 频率平衡比（Balance Ratio）}
+
+\begin{equation}
+R_{balance} = \frac{E_{high}}{E_{low}}
+\end{equation}
+
+理想值接近1.0表示高低频能量均衡，有利于产生双稳态视觉效果。
+
+\textbf{3. 对比度指标}
+
+\begin{itemize}
+    \item \textbf{RMS对比度}：$C_{RMS} = \sqrt{\frac{1}{MN}\sum_{i,j}(I_{i,j} - \bar{I})^2}$，衡量图像灰度值的标准差
+    \item \textbf{Michelson对比度}：$C_{Michelson} = \frac{I_{max} - I_{min}}{I_{max} + I_{min}}$，范围[0,1]
+\end{itemize}
+
+\textbf{4. 边缘特性}
+
+\begin{itemize}
+    \item \textbf{边缘密度}：边缘像素占图像总像素的百分比，反映细节丰富程度
+    \item \textbf{边缘强度}：$E_{strength} = \frac{1}{MN}\sum_{i,j}\sqrt{G_x^2 + G_y^2}$，Sobel梯度幅值均值
+\end{itemize}
+
+\subsubsection{定量评估结果}
+
+对五种滤波方法生成的混合图像（截止频率$D_0=20$）进行定量评估，结果如表\ref{tab:quantitative_eval}所示。
+
+\begin{table}[h]
+\centering
+\caption{混合图像定量评估结果对比}
+\label{tab:quantitative_eval}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{滤波方法} & \textbf{分离度} & \textbf{平衡比} & \textbf{RMS对比度} & \textbf{Michelson} & \textbf{边缘密度} \\
+\hline
+理想滤波器 & 0.216 & 0.012 & 57.53 & 1.000 & 19.37\% \\
+巴特沃斯滤波器 & 0.203 & 0.011 & 87.77 & 1.000 & 20.73\% \\
+椭圆滤波器 & 0.225 & 0.013 & 63.17 & 1.000 & 15.99\% \\
+高斯滤波器 & 0.325 & 0.028 & 82.27 & 1.000 & 16.17\% \\
+Sobel边缘混合 & 0.552 & 0.091 & 66.72 & 1.000 & 9.85\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{结果分析与讨论}
+
+\textbf{1. 频率分离度分析}
+
+从表\ref{tab:quantitative_eval}可以看出：
+\begin{itemize}
+    \item \textbf{Sobel边缘混合}方法的分离度最高（0.552），远超其他方法，说明其在保留高频边缘信息的同时也保留了足够的低频信息
+    \item \textbf{高斯滤波器}次之（0.325），表现出良好的高低频共存特性
+    \item \textbf{频域滤波器}（理想、巴特沃斯、椭圆）的分离度较低（0.20-0.23），说明频域方法更倾向于完全分离高低频
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{evaluation_plots/frequency_metrics_comparison.png}
+\caption{频率指标对比：左图为频率分离度评分，右图为高低频平衡比。Sobel边缘混合方法在两项指标上均表现最优。}
+\end{figure}
+
+\textbf{2. 能量分布特征}
+
+所有方法的低频能量占比都在90\%以上，这是因为：
+\begin{itemize}
+    \item 图像的主要能量集中在低频区域（DC分量和缓变区域）
+    \item 高频成分虽然对视觉感知重要，但能量占比相对较小
+    \item Sobel方法的高频能量占比最高（8.32\%），是其他方法的3-8倍
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{evaluation_plots/energy_distribution_comparison.png}
+\caption{频率能量分布对比：蓝色为低频能量占比，红色为高频能量占比。Sobel方法具有最高的高频能量（8.32\%）。}
+\end{figure}
+
+\textbf{3. 对比度与边缘质量}
+
+\begin{itemize}
+    \item \textbf{巴特沃斯滤波器}：RMS对比度最高（87.77），边缘密度也最高（20.73\%），说明细节保留最完整
+    \item \textbf{高斯滤波器}：对比度次高（82.27），边缘强度最强（73.15），平滑过渡效果好
+    \item \textbf{Sobel边缘混合}：虽然边缘密度最低（9.85\%），但边缘强度极高（86.99），说明保留的都是最显著的边缘
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{evaluation_plots/contrast_metrics_comparison.png}
+\caption{对比度指标对比：绿色为RMS对比度，紫色为Michelson对比度（×100）。巴特沃斯滤波器具有最高的RMS对比度。}
+\end{figure}
+
+\textbf{4. 综合性能排名}
+
+基于多指标加权综合评分（分离度35\%，平衡性25\%，对比度20\%，边缘质量20\%）：
+
+\begin{enumerate}
+    \item \textbf{Sobel边缘混合}（0.546）：频率分离度和平衡性最优，边缘清晰锐利，视觉效果最显著
+    \item \textbf{高斯滤波器}（0.439）：分离度良好，对比度高，边缘质量强，综合性能优秀
+    \item \textbf{巴特沃斯滤波器}（0.363）：对比度最高，细节最丰富，但频率分离度一般
+    \item \textbf{椭圆滤波器}（0.303）：各项指标适中，提供方向性选择能力
+    \item \textbf{理想滤波器}（0.281）：对比度较低，但边缘保持性能尚可
+\end{enumerate}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{evaluation_plots/comprehensive_radar_chart.png}
+\caption{综合质量雷达图：从分离度、平衡性、对比度、边缘质量四个维度对比五种方法。Sobel边缘混合方法综合性能最优。}
+\end{figure}
+
+\textbf{5. 方法选择建议}
+
+根据应用需求选择合适的滤波方法：
+\begin{itemize}
+    \item \textbf{追求最佳混合效果}：推荐Sobel边缘混合或高斯滤波器
+    \item \textbf{强调细节保留}：推荐巴特沃斯滤波器
+    \item \textbf{需要方向性控制}：推荐椭圆滤波器
+    \item \textbf{理论研究目的}：可尝试理想滤波器以观察振铃效应
+\end{itemize}
 
 \subsubsection{误差分析}
 
@@ -853,6 +992,13 @@ $D_0$ & 爱因斯坦（高通）效果 & 梦露（低通）效果 \\
     \item 频率响应分析是理解和优化滤波器的关键工具
 \end{itemize}
 
-通过本项目，不仅掌握了图像频域处理的理论和实践，更重要的是培养了系统分析问题、设计实验、对比优化的工程思维能力，为未来的学习和工作奠定了坚实基础。
+通过本项目，我不仅掌握了图像频域处理的理论和实践，更重要的是培养了系统分析问题、设计实验、对比优化的工程思维能力，为未来的学习和工作奠定了坚实基础。
 
+\section*{AI工具使用报告}
+在本项目中，我使用了Claude Sonnet 4.5作为辅助工具，主要用于以下方面：
+\begin{itemize}
+    \item \textbf{理论分析}：我通过与AI的对话，深入理解了空域上的滤波器和算子在频域中的特性，帮助我更好地进行参数调整。
+    \item \textbf{代码优化}：AI帮助我优化了部分Python代码，提高了运行效率和可读性。
+
+\end{itemize}
 \end{document}
